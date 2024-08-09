@@ -13,6 +13,7 @@ export class TransactionController {
     return this.transactionService.buildContractTransaction(
       payload.publicKey,
       payload.documentHash,
+      payload.contractMethod,
     )
   }
 
