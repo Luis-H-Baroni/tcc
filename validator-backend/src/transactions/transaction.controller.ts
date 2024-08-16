@@ -10,19 +10,48 @@ export class TransactionController {
 
   @Post('/build')
   async buildContractTransaction(@Body() payload: BuildContractTransactionDto) {
-    return this.transactionService.buildContractTransaction(
-      payload.publicKey,
-      payload.documentHash,
-      payload.contractMethod,
-    )
+    try {
+      return this.transactionService.buildContractTransaction(
+        payload.publicKey,
+        payload.documentHash,
+        payload.contractMethod,
+      )
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   }
 
   @Post('/broadcast')
   async broadcastContractTransaction(
     @Body() payload: BroadcastContractTransactionDto,
   ) {
-    return this.transactionService.broadcastContractTransaction(
-      payload.transaction,
-    )
+    try {
+      console.log(payload.transaction)
+      const result = await this.transactionService.broadcastContractTransaction(
+        payload.transaction,
+      )
+
+      return `
+      <div class="label-field-section">
+        <label>Documento Registrado</label>
+                <div class="label-field">
+                    <label for="document-hash">Hash do Documento</label>
+                    <div class="input-group">
+                        <input type="text" id="document-hash" value="0x123123" readonly>
+                    </div>
+                </div>
+                <div class="label-field">
+                    <label for="transaction-hash">Transação</label>
+                    <div class="input-group">
+                        <input type="text" id="transaction-hash" value=${result.hash} readonly>  
+                    </div>
+                </div>
+      </div>
+      `
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   }
 }

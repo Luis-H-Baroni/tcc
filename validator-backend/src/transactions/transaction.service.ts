@@ -1,10 +1,10 @@
-import { Contract, ethers, Wallet } from 'ethers'
+import { Contract, ethers, TransactionResponse, Wallet } from 'ethers'
 
 import {
   BadRequestException,
   Inject,
   Injectable,
-  InternalServerErrorException,
+  ServiceUnavailableException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
@@ -28,31 +28,26 @@ export class TransactionService {
     if (!validMethods.includes(contractMethod))
       throw new BadRequestException('Invalid contract method')
 
-    try {
-      const hashedPublicKey = ethers.keccak256(publicKey)
+    const hashedPublicKey = ethers.keccak256(publicKey)
 
-      const contractTransaction = await this.contract[
-        contractMethod
-      ].populateTransaction(documentHash, hashedPublicKey)
+    const contractTransaction = await this.contract[
+      contractMethod
+    ].populateTransaction(documentHash, hashedPublicKey)
 
-      console.log(this.wallet.signingKey.publicKey)
-      const transaction =
-        await this.wallet.populateTransaction(contractTransaction)
-      const signedTransaction = await this.wallet.signTransaction(transaction)
+    console.log(this.wallet.signingKey.publicKey)
 
-      return signedTransaction
-    } catch (error: any) {
-      console.log(error)
-      throw new InternalServerErrorException(error.shortMessage)
-    }
+    return contractTransaction
   }
 
-  async broadcastContractTransaction(transaction: string) {
-    try {
-      return await this.provider.broadcastTransaction(transaction)
-    } catch (error: any) {
-      console.log(error)
-      throw new InternalServerErrorException(error.shortMessage)
-    }
+  async broadcastContractTransaction(signedTransaction: string) {
+    const broadcastedTransaction: TransactionResponse =
+      await this.provider.broadcastTransaction(signedTransaction)
+
+    const result = await broadcastedTransaction.wait()
+    if (!result.status)
+      throw new ServiceUnavailableException('Transaction failed')
+
+    console.log(result)
+    return result
   }
 }

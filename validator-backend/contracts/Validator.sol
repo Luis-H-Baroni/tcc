@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.24;
 
-
 import "hardhat/console.sol";
 
 contract Validator {
@@ -11,7 +10,6 @@ contract Validator {
     mapping (bytes32 => bytes32) hashes;
 
     constructor() payable {
-        
         owner = msg.sender;
     }
 
