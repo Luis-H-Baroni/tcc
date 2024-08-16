@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="./htmx.min.js"></script>
+  </head>
+  <body>
+    <main class="main-content">
+      <div class="card-container">
+        <div class="card">
+          <div class="initialize-section">
+            <label>Entre com uma carteira</label>
+            <div class="initialize-buttons" id="initializeWallet">
+              <button class="initialize-button" id="newWallet">
+                Nova Carteira
+              </button>
+              <button class="initialize-button" id="existingWallet">
+                Carteira Existente
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <form
+            id="transactionBuild"
+            hx-post="http://localhost:3000/transactions/build"
+          >
+            <input type="hidden" id="publicKey" name="publicKey" />
+
+            <input type="hidden" id="documentHash" name="documentHash" />
+
+            <input type="hidden" id="contractMethod" name="contractMethod" />
+            <div class="upload-section">
+              <label for="file-upload">Insira seu arquivo</label>
+              <input type="file" id="file-upload" />
+              <div class="action-buttons">
+                <button class="btn" type="submit" value="verificar">
+                  Verificar
+                </button>
+                <button class="btn" type="submit" value="storeHash">
+                  Registrar
+                </button>
+                <button class="btn" type="submit" value="atualizar">
+                  Atualizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      import {
+        populateTransaction,
+        signTransaction,
+        formatUnits,
+        generateHash,
+      } from "./transactions.js";
+      import {
+        randomMnemonicPhrase,
+        initializeWallet,
+        getWallet,
+      } from "./wallet.js";
+
+      document
+        .getElementById("initializeWallet")
+        .addEventListener("click", async function (event) {
+          const button = event.target;
+
+          if (button.id === "newWallet") {
+            const mnemonicPhrase = await randomMnemonicPhrase();
+            console.log(mnemonicPhrase);
+
+            document.getElementById("initializeWallet").innerHTML = `
+            <p>${mnemonicPhrase}</p>
+            <button id="continueNewWallet">Continuar</button>
+          `;
+          } else if (
+            button.id === "existingWallet" ||
+            button.id === "continueNewWallet"
+          ) {
+            console.log("Carteira Existente");
+
+            document.getElementById("initializeWallet").innerHTML = `
+            <label for="mnemonicPhrase">Mnemonic Phrase</label><br />
+
+            <input type="text" id="mnemonicPhrase" name="mnemonicPhrase" /><br />
+            <button id="continueExistingWallet">Continuar</button>
+            `;
+          } else if (button.id === "continueExistingWallet") {
+            const mnemonicPhrase =
+              document.getElementById("mnemonicPhrase").value;
+            console.log(mnemonicPhrase);
+
+            await initializeWallet(mnemonicPhrase);
+
+            const wallet = await getWallet();
+
+            document.getElementById("initializeWallet").innerHTML = `
+            <div class="label-field-section">
+                <div class="label-field">
+                    <label for="public-key">Sua chave pública</label>
+                    <div class="input-group">
+                        <input type="text" id="public-key" value=${wallet.publicKey} readonly>
+                        <button class="copy-btn">📋</button>
+                    </div>
+                </div>
+                <div class="label-field">
+                    <label for="address">Seu endereço</label>
+                    <div class="input-group">
+                        <input type="text" id="address" value=${wallet.address} readonly>
+                        <button class="copy-btn">📋</button>
+                    </div>
+                </div>
+            </div>
+          `;
+          }
+        });
+
+      document
+        .getElementById("transactionBuild")
+        .addEventListener("submit", async function (event) {
+          const clickedButton = event.submitter;
+          const wallet = await getWallet();
+          console.log("publicKey", publicKey);
+
+          document.getElementById("contractMethod").value = clickedButton.value;
+          document.getElementById("publicKey").value =
+            wallet.signingKey.publicKey;
+        });
+
+      document
+        .getElementById("transactionBuild")
+        .addEventListener("htmx:afterRequest", async function (event) {
+          const transaction = JSON.parse(event.detail.xhr.response);
+
+          const populatedTransaction = await populateTransaction(transaction);
+
+          const signedTransaction = await signTransaction(populatedTransaction);
+
+          const element = `
+          <form
+          id="transactionBroadcast"
+          hx-post="http://localhost:3000/transactions/broadcast"
+          hx-swap="outerHTML"
+          hx-include="[name='transaction']"
+          >
+          <p>Registrar Documento</p>
+          <p>Taxa</p>
+          <p>${formatUnits(
+            populatedTransaction.maxFeePerGas * populatedTransaction.gasLimit,
+            "gwei"
+          )} GWEI</p>
+          <label for="validateDiploma">Verificar Conformidade do Diploma Digital junto ao MEC</label><br />
+          <input type="checkbox" id="validateDiploma" name="validateDiploma" unchecked />
+          <input type="hidden" id="transaction" name="transaction"
+          value=${JSON.stringify(signedTransaction)} /><br />
+          <input type="submit" value="Confirmar" />
+          </form>
+      `;
+
+          document.getElementById("transactionBuild").outerHTML = element;
+          htmx.process(document.getElementById("transactionBroadcast"));
+        });
+
+      document
+        .getElementById("file-upload")
+        .addEventListener("change", async function (event) {
+          const file = event.target.files[0];
+          if (file) {
+            const buffer = await fileToBuffer(file);
+            const hash = generateHash(buffer);
+            console.log("hash", hash);
+            document.getElementById("documentHash").value = hash;
+            document.getElementById("file-upload").outerHTML = file.name;
+          }
+        });
+
+      async function fileToBuffer(file) {
+        const arrayBuffer = await fileToArrayBuffer(file);
+        const byteArray = new Uint8Array(arrayBuffer);
+
+        return byteArray;
+      }
+
+      function fileToArrayBuffer(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsArrayBuffer(file);
+        });
+      }
+    </script>
+  </body>
+</html>
