@@ -84,7 +84,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .label-field {
@@ -92,6 +92,48 @@ body {
   flex-direction: column;
   gap: 5px;
   width: 100%;
+}
+
+.label-field-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.row-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.fee-input-group {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.fee-input-group input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: monospace;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+}
+
+.fee-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
 }
 
 .input-group {
@@ -111,6 +153,24 @@ body {
   font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#public-key-input {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#hash-public-key-input {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .input-group .copy-btn {
