@@ -50,4 +50,11 @@ export class TransactionService {
     console.log(result)
     return result
   }
+
+  async verifyHash(documentHash: string) {
+    const [exists, valid, ownerPublicKey] =
+      await this.contract.verifyHash(documentHash)
+    console.log(exists, ownerPublicKey)
+    return { exists, valid, ownerPublicKey }
+  }
 }
