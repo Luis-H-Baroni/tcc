@@ -19,7 +19,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "node:local": "hardhat node",
     "contract:compile": "hardhat compile",
-    "contract:deploy:local": "hardhat ignition deploy ./ignition/modules/Validator.ts --network localhost"
+    "contract:deploy:local": "hardhat ignition deploy ./ignition/modules/Validator.ts --network localhost",
+    "contract:deploy:testnet": "hardhat ignition deploy ./ignition/modules/Validator.ts --network testnet"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

@@ -7,6 +7,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { RecordDto } from 'src/dtos/record.dto'
 
 @Injectable()
 export class TransactionService {
@@ -22,6 +23,7 @@ export class TransactionService {
     publicKey: string,
     documentHash: string,
     contractMethod: string,
+    status?: string,
   ) {
     const validMethods = this.configService.get('contract.methods')
 
@@ -30,9 +32,19 @@ export class TransactionService {
 
     const hashedPublicKey = ethers.keccak256(publicKey)
 
+    const nonce = await this.wallet.getNonce()
+    console.log('nonce', nonce)
+    const transactionParams = {
+      documentHash,
+      hashedPublicKey,
+    }
+    if (contractMethod === 'updateStatus')
+      transactionParams['status'] = this.parseBoolean(status)
+
+    console.log('parametros da transação', transactionParams)
     const contractTransaction = await this.contract[
       contractMethod
-    ].populateTransaction(documentHash, hashedPublicKey)
+    ].populateTransaction(...Object.values(transactionParams))
 
     console.log(this.wallet.signingKey.publicKey)
 
@@ -52,9 +64,27 @@ export class TransactionService {
   }
 
   async verifyHash(documentHash: string) {
-    const [exists, valid, ownerPublicKey] =
-      await this.contract.verifyHash(documentHash)
-    console.log(exists, ownerPublicKey)
-    return { exists, valid, ownerPublicKey }
+    const records: RecordDto[] = await this.contract.verifyHash(documentHash)
+    console.log('records', records)
+
+    return records
+  }
+
+  async verifyOwnership(documentHash: string, publicKey: string) {
+    const records: RecordDto[] = await this.verifyHash(documentHash)
+
+    const hashedPublicKey = ethers.keccak256(publicKey)
+
+    for (const record of records) {
+      if (record.publicKey === hashedPublicKey) return true
+    }
+
+    return false
+  }
+
+  private parseBoolean(value: string) {
+    if (value === 'true') return true
+    if (value === 'false') return false
+    throw new BadRequestException('Invalid boolean value')
   }
 }

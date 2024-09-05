@@ -8,7 +8,9 @@ import contractArtifact from '../artifacts/contracts/Validator.sol/Validator.jso
     {
       provide: 'ETHERS_PROVIDER',
       useFactory: () => {
-        return new ethers.JsonRpcProvider('http://localhost:8545')
+        return new ethers.JsonRpcProvider(
+          'https://rpc-amoy.polygon.technology/',
+        )
       },
     },
     {
@@ -25,7 +27,7 @@ import contractArtifact from '../artifacts/contracts/Validator.sol/Validator.jso
       provide: 'ETHERS_CONTRACT',
       useFactory: (provider: ethers.JsonRpcProvider) => {
         return new ethers.Contract(
-          '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+          '0x9FE216ACEc9Af5b5617626eBe3BC0a8393347c86',
           contractArtifact.abi,
           provider,
         )

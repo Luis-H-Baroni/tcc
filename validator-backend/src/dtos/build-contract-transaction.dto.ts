@@ -4,4 +4,6 @@ export class BuildContractTransactionDto {
   publicKey: string
 
   documentHash: string
+
+  status?: string
 }
