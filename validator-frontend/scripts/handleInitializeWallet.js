@@ -1,5 +1,11 @@
+import { fileIsUploaded } from "./handleChange.js";
 import { generateHash } from "./utils.js";
-import { randomMnemonicPhrase, initializeWallet, getWallet } from "./wallet.js";
+import {
+  randomMnemonicPhrase,
+  initializeWallet,
+  getWallet,
+  walletIsInitialized,
+} from "./wallet.js";
 
 export async function handleInitializeWallet(event) {
   const button = event.target;
@@ -32,6 +38,12 @@ export async function handleInitializeWallet(event) {
 
     const wallet = await getWallet();
 
+    if (walletIsInitialized() && fileIsUploaded()) {
+      document.getElementById("verify-hash").disabled = false;
+      document.getElementById("store-hash").disabled = false;
+      document.getElementById("verify-ownership").disabled = false;
+    }
+
     document.getElementById("initializeWallet").innerHTML = `
       <div class="label-field-section">
           <div class="label-field">
@@ -40,14 +52,14 @@ export async function handleInitializeWallet(event) {
                   <input type="text" id="public-key" value=${
                     wallet.signingKey.publicKey
                   } readonly>
-                  <button class="copy-btn">📋</button>
+                  <button id="copy-btn" class="copy-btn">📋</button>
               </div>
               <label for="public-key">Hash da chave pública</label>
               <div class="input-group" id="hash-public-key-input">
                   <input type="text" id="hash-public-key" value=${generateHash(
                     wallet.signingKey.publicKey
                   )} readonly>
-                  <button class="copy-btn">📋</button>
+                  <button id="copy-btn" class="copy-btn">📋</button>
               </div>
           </div>
           <div class="label-field">
@@ -56,7 +68,7 @@ export async function handleInitializeWallet(event) {
                   <input type="text" id="address" value=${
                     wallet.address
                   } readonly>
-                  <button class="copy-btn">📋</button>
+                  <button id="copy-btn" class="copy-btn">📋</button>
               </div>
           </div>
       </div>

@@ -6,17 +6,23 @@ export function handleClick(event) {
           <label for="file-upload">Insira seu arquivo</label>
           <input type="file" id="file-upload" />
           <div class="action-buttons">
-            <button class="btn" type="submit" value="verifyHash">
+            <button class="btn" id="verify-hash" type="submit" value="verifyHash" disabled>
               Verificar
             </button>
-            <button class="btn" type="submit" value="storeHash">
+            <button class="btn" id="store-hash" type="submit" value="storeHash" disabled>
               Registrar
             </button>
-            <button class="btn" type="submit" value="atualizar">
+            <button class="btn" id="verify-ownership" type="submit" value="verifyOwnership" disabled>
               Atualizar
             </button>
           </div>
         </div>
       </form>`;
+  }
+
+  if (event.target.id === "copy-btn") {
+    const copyText = event.target.previousElementSibling.value;
+    console.log(copyText);
+    navigator.clipboard.writeText(copyText);
   }
 }

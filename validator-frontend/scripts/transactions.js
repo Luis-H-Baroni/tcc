@@ -1,4 +1,5 @@
 import { getWallet } from "./wallet.js";
+import { ethers } from "../libs/ethers.min.js";
 
 export async function populateTransaction(transaction) {
   const wallet = await getWallet();
