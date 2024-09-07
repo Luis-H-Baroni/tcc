@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { TransactionController } from '../../../src/transactions/transaction.controller'
-import { TransactionService } from '../../../src/transactions/transaction.service'
+import { TransactionController } from '../../../src/transactions/transactions.controller'
+import { TransactionService } from '../../../src/transactions/transactions.service'
 
 describe('TransactionController', () => {
   let transactionController: TransactionController
@@ -20,9 +20,7 @@ describe('TransactionController', () => {
       ],
     }).compile()
 
-    transactionController = module.get<TransactionController>(
-      TransactionController,
-    )
+    transactionController = module.get<TransactionController>(TransactionController)
     transactionService = module.get<TransactionService>(TransactionService)
   })
 
@@ -64,9 +62,9 @@ describe('TransactionController', () => {
         transaction: 'mockedTransaction',
       })
       expect(result).toBe(mockBroadcastResult)
-      expect(
-        transactionService.broadcastContractTransaction,
-      ).toHaveBeenCalledWith('mockedTransaction')
+      expect(transactionService.broadcastContractTransaction).toHaveBeenCalledWith(
+        'mockedTransaction',
+      )
     })
   })
 })

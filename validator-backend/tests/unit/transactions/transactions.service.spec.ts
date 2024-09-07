@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { TransactionService } from '../../../src/transactions/transaction.service'
+import { TransactionsService } from '../../../src/transactions/transactions.service'
 import { InternalServerErrorException } from '@nestjs/common'
 import { ethers } from 'ethers'
 import { ConfigService } from '@nestjs/config'
@@ -55,9 +55,7 @@ describe('TransactionService', () => {
 
       jest.spyOn(configService, 'get').mockReturnValue(validMethods)
 
-      mockContract.storeHash.populateTransaction.mockResolvedValue(
-        mockTransaction,
-      )
+      mockContract.storeHash.populateTransaction.mockResolvedValue(mockTransaction)
       mockWallet.populateTransaction.mockResolvedValue(mockTransaction)
       mockWallet.signTransaction.mockResolvedValue(mockSignedTransaction)
 
@@ -73,9 +71,7 @@ describe('TransactionService', () => {
         mockDocumentHash,
         ethers.keccak256(mockPublicKey),
       )
-      expect(mockWallet.populateTransaction).toHaveBeenCalledWith(
-        mockTransaction,
-      )
+      expect(mockWallet.populateTransaction).toHaveBeenCalledWith(mockTransaction)
       expect(mockWallet.signTransaction).toHaveBeenCalledWith(mockTransaction)
     })
 
@@ -115,19 +111,13 @@ describe('TransactionService', () => {
       mockProvider.broadcastTransaction.mockResolvedValue(mockBroadcastResult)
 
       const result =
-        await transactionService.broadcastContractTransaction(
-          'mockedTransaction',
-        )
+        await transactionService.broadcastContractTransaction('mockedTransaction')
       expect(result).toBe(mockBroadcastResult)
-      expect(mockProvider.broadcastTransaction).toHaveBeenCalledWith(
-        'mockedTransaction',
-      )
+      expect(mockProvider.broadcastTransaction).toHaveBeenCalledWith('mockedTransaction')
     })
 
     it('should throw InternalServerErrorException on error', async () => {
-      mockProvider.broadcastTransaction.mockRejectedValue(
-        new Error('Mocked Error'),
-      )
+      mockProvider.broadcastTransaction.mockRejectedValue(new Error('Mocked Error'))
 
       await expect(
         transactionService.broadcastContractTransaction('mockedTransaction'),

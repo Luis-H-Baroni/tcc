@@ -1,86 +1,14 @@
-import {
-  Body,
-  Controller,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common'
-import { TransactionService } from './transaction.service'
+import { Controller, Get, Param } from '@nestjs/common'
+import { RecordsService } from './records.service'
 
-import { BuildContractTransactionDto } from '../dtos/build-contract-transaction.dto'
-import { BroadcastContractTransactionDto } from '../dtos/broadcast-contract-transaction.dto'
-import { FileInterceptor } from '@nestjs/platform-express'
+@Controller('records')
+export class RecordsController {
+  constructor(private readonly recordsService: RecordsService) {}
 
-@Controller('transactions')
-export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) {}
-
-  @Post('/build')
-  @UseInterceptors(FileInterceptor('file'))
-  async buildContractTransaction(
-    @Body() payload: BuildContractTransactionDto,
-    @UploadedFile() file,
-  ) {
-    console.log('payload', payload)
+  @Get('/:documentHash')
+  async getRecords(@Param('documentHash') documentHash: string) {
     try {
-      return this.transactionService.buildContractTransaction(
-        payload.publicKey,
-        payload.documentHash,
-        payload.contractMethod,
-        payload.validateDigitalDiploma,
-        payload.status,
-        file,
-      )
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-  }
-
-  @Post('/broadcast')
-  async broadcastContractTransaction(
-    @Body() payload: BroadcastContractTransactionDto,
-  ) {
-    try {
-      console.log(payload.transaction)
-      const result = await this.transactionService.broadcastContractTransaction(
-        payload.transaction,
-      )
-
-      return `
-      <div class="label-field-section">
-        <label>Sucesso</label>
-                <div class="label-field">
-                    <label for="document-hash">Hash do Documento</label>
-                    <div class="input-group">
-                        <input type="text" id="document-hash" value=${payload.documentHash} readonly>
-                    </div>
-                </div>
-                <div class="label-field">
-                    <label for="transaction-hash">Transação</label>
-                    <div class="input-group">
-                        <input type="text" id="transaction-hash" value=${result.hash} readonly>  
-                    </div>
-                </div>
-
-                <div class="action-buttons">
-            <button class="btn" id="return-to-selector">Voltar</button>
-            
-          </div>
-      </div>
-      `
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-  }
-
-  @Post('/verify')
-  async verifyHash(@Body() payload: { documentHash: string }) {
-    try {
-      const records = await this.transactionService.verifyHash(
-        payload.documentHash,
-      )
+      const records = await this.recordsService.getRecords(documentHash)
 
       if (records.length === 0)
         return `
@@ -89,7 +17,7 @@ export class TransactionController {
               <div class="label-field">
                 <label for="document-hash">Hash Buscado</label>
                 <div class="input-group">
-                  <input type="text" id="document-hash" value=${payload.documentHash} readonly>
+                  <input type="text" id="document-hash" value=${documentHash} readonly>
                             
                 </div>
               </div>
@@ -143,7 +71,7 @@ export class TransactionController {
                     </div>
                     <label for="document-hash">Hash Registrado</label>
                     <div class="input-group">
-                        <input type="text" id="document-hash" value=${payload.documentHash} readonly>
+                        <input type="text" id="document-hash" value=${record.hash} readonly>
                     </div>
                 
                 
@@ -167,15 +95,13 @@ export class TransactionController {
     }
   }
 
-  @Post('/verify-ownership')
+  @Get('/:documentHash/ownership/:publicKey')
   async verifyOwnership(
-    @Body() payload: { documentHash: string; publicKey: string },
+    @Param('documentHash') documentHash: string,
+    @Param('publicKey') publicKey: string,
   ) {
     try {
-      const isOwner = await this.transactionService.verifyOwnership(
-        payload.documentHash,
-        payload.publicKey,
-      )
+      const isOwner = await this.recordsService.verifyOwnership(documentHash, publicKey)
       console.log('é dono', isOwner)
 
       if (!isOwner)
@@ -185,13 +111,13 @@ export class TransactionController {
                 <div class="label-field">
                     <label for="document-hash">Hash do Documento</label>
                     <div class="input-group">
-                        <input type="text" id="document-hash" value=${payload.documentHash} readonly>
+                        <input type="text" id="document-hash" value=${documentHash} readonly>
                     </div>
                 </div>
                 <div class="label-field">
                     <label for="owner-public-key">Chave Pública do Emissor</label>
                     <div class="input-group">
-                        <input type="text" id="owner-public-key" value=${payload.publicKey} readonly>
+                        <input type="text" id="owner-public-key" value=${publicKey} readonly>
                     </div>
                 </div>
                 <div class="action-buttons">
@@ -206,13 +132,13 @@ export class TransactionController {
                 <div class="label-field">
                     <label for="document-hash">Hash do Documento</label>
                     <div class="input-group">
-                        <input type="text" id="document-hash" value=${payload.documentHash} readonly>
+                        <input type="text" id="document-hash" value=${documentHash} readonly>
                     </div>
                 </div>
                 <div class="label-field">
                     <label for="owner-public-key">Chave Pública do Emissor</label>
                     <div class="input-group">
-                        <input type="text" id="owner-public-key" value=${payload.publicKey} readonly>
+                        <input type="text" id="owner-public-key" value=${publicKey} readonly>
                     </div>
                 </div>
                 <div class="label-field">
@@ -240,7 +166,7 @@ export class TransactionController {
               </div>
                 <div class="action-buttons">
             <button class="btn" id="return-to-selector">Voltar</button>
-            <button class="btn" type="submit" value="updateStatus">Atualizar Status</button>
+            <button class="btn" type="submit" value="updateRecordStatus">Atualizar Status</button>
             
           </div>
                 </div>`
