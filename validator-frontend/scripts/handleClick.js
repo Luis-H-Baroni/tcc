@@ -6,10 +6,10 @@ export function handleClick(event) {
           <label for="file-upload">Insira seu arquivo</label>
           <input type="file" id="file-upload" />
           <div class="action-buttons">
-            <button class="btn" id="verify-hash" type="submit" value="verifyHash" disabled>
+            <button class="btn" id="verify-hash" type="submit" value="getRecords" disabled>
               Verificar
             </button>
-            <button class="btn" id="store-hash" type="submit" value="confirmStoreHash" disabled>
+            <button class="btn" id="store-hash" type="submit" value="confirmStoreRecord" disabled>
               Registrar
             </button>
             <button class="btn" id="verify-ownership" type="submit" value="verifyOwnership" disabled>

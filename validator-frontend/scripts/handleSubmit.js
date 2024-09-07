@@ -16,7 +16,7 @@ export async function handleSubmit(event) {
   const publicKey = wallet.signingKey.publicKey;
   const documentHash = localStorage.getItem("documentHash");
 
-  if (clickedButton.value === "confirmStoreHash") {
+  if (clickedButton.value === "confirmStoreRecord") {
     const element = `
       <div class="label-field-section">
         <label>Registrar Documento</label>
@@ -45,13 +45,13 @@ export async function handleSubmit(event) {
               </div>
                 <div class="action-buttons">
             <button class="btn" id="return-to-selector">Voltar</button>
-            <button class="btn" type="submit" value="storeHash">Confirmar</button>
+            <button class="btn" type="submit" value="storeRecord">Confirmar</button>
             
           </div>
                 </div>`;
     document.getElementById("transactionSelector").innerHTML = element;
   }
-  if (clickedButton.value === "storeHash") {
+  if (clickedButton.value === "storeRecord") {
     const validateDiplomaCheckbox = document.getElementById("validateDiploma");
     const validateDigitalDiploma = validateDiplomaCheckbox
       ? validateDiplomaCheckbox.checked
@@ -145,12 +145,12 @@ export async function handleSubmit(event) {
     htmx.process(document.getElementById("transactionBroadcast"));
   }
 
-  if (clickedButton.value === "verifyHash") {
+  if (clickedButton.value === "getRecords") {
     const element = `
-    <form id="verifyHash"
-      hx-post="http://localhost:3000/transactions/verify"
+    <form id="getRecords"
+      hx-get="http://localhost:3000/records/${documentHash}"
       hx-swap="outerHTML"
-      hx-include="[name='documentHash']">
+      hx-params="none">
   
       <div class="label-field-section">
       <label>Verificar Documento</label>
@@ -177,18 +177,14 @@ export async function handleSubmit(event) {
   `;
 
     document.getElementById("bottomCard").innerHTML = element;
-    htmx.process(document.getElementById("verifyHash"));
+    htmx.process(document.getElementById("getRecords"));
   }
 
   if (clickedButton.value === "verifyOwnership") {
     const element = await fetch(
-      "http://localhost:3000/transactions/verify-ownership",
+      `http://localhost:3000/records/${documentHash}/ownership/${publicKey}`,
       {
-        method: "POST",
-        body: JSON.stringify({
-          publicKey: publicKey,
-          documentHash: documentHash,
-        }),
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
@@ -198,7 +194,7 @@ export async function handleSubmit(event) {
     document.getElementById("transactionSelector").innerHTML = element;
   }
 
-  if (clickedButton.value === "updateStatus") {
+  if (clickedButton.value === "updateRecordStatus") {
     const validateDiplomaCheckbox = document.getElementById("validateDiploma");
     const validateDigitalDiploma = validateDiplomaCheckbox
       ? validateDiplomaCheckbox.checked
