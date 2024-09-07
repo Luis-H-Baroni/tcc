@@ -5,5 +5,6 @@ import { MecDigitalDiplomaService } from './mec-digital-diploma.service'
 @Module({
   controllers: [MecDigitalDiplomaController],
   providers: [MecDigitalDiplomaService],
+  exports: [MecDigitalDiplomaService],
 })
 export class MecDigitalDiplomaModule {}

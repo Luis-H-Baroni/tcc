@@ -1,21 +1,35 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common'
 import { TransactionService } from './transaction.service'
 
 import { BuildContractTransactionDto } from '../dtos/build-contract-transaction.dto'
 import { BroadcastContractTransactionDto } from '../dtos/broadcast-contract-transaction.dto'
+import { FileInterceptor } from '@nestjs/platform-express'
 
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
   @Post('/build')
-  async buildContractTransaction(@Body() payload: BuildContractTransactionDto) {
+  @UseInterceptors(FileInterceptor('file'))
+  async buildContractTransaction(
+    @Body() payload: BuildContractTransactionDto,
+    @UploadedFile() file,
+  ) {
+    console.log('payload', payload)
     try {
       return this.transactionService.buildContractTransaction(
         payload.publicKey,
         payload.documentHash,
         payload.contractMethod,
+        payload.validateDigitalDiploma,
         payload.status,
+        file,
       )
     } catch (error) {
       console.log(error)
@@ -70,36 +84,62 @@ export class TransactionController {
 
       if (records.length === 0)
         return `
-      <div class="label-field-section">
-        <label>Registro Não Encontrado</label>
-                <div class="label-field">
-                    <label for="document-hash">Hash Buscado</label>
-                    <div class="input-group">
-                        <input type="text" id="document-hash" value=${payload.documentHash} readonly>
-                        
-                        </div>
-                        </div>
-                        <div class="action-buttons">
-            <button class="btn" id="return-to-selector">Voltar</button>
-            
-          </div>
-                        </div>`
+          <div class="label-field-section">
+            <label>Registro Não Encontrado</label>
+              <div class="label-field">
+                <label for="document-hash">Hash Buscado</label>
+                <div class="input-group">
+                  <input type="text" id="document-hash" value=${payload.documentHash} readonly>
+                            
+                </div>
+              </div>
+            <div class="action-buttons">
+              <button class="btn" id="return-to-selector">Voltar</button> 
+            </div>
+          </div>`
 
       return `
       <div class="label-field-section">
         <label>Registros Encontrados</label>
                 ${records
-                  .map(
-                    (record) => `
+                  .map((record) => {
+                    console.log(Number(record.status))
+                    let status
+                    let mecConformityStatus
+
+                    switch (Number(record.status)) {
+                      case 0:
+                        status =
+                          '<div class="status-input-group" id=valid-status> <span id="valid">VÁLIDO</span> </div>'
+                        break
+                      case 1:
+                        status =
+                          '<div class="status-input-group" id=invalid-status> <span id="invalid">INVÁLIDO</span> </div>'
+
+                      default:
+                        break
+                    }
+
+                    switch (Number(record.mecConformityStatus)) {
+                      case 0:
+                        mecConformityStatus =
+                          '<div class="status-input-group" id=valid-status> <span id="valid">CONFORME</span> </div>'
+                        break
+                      case 1:
+                        mecConformityStatus =
+                          '<div class="status-input-group" id=invalid-status> <span id="invalid">NÃO CONFORME</span> </div>'
+
+                      default:
+                        break
+                    }
+                    return `
                     <div class="record">
                     <div class="label-field">
                     <div class="row-section">
-                    ${
-                      record.valid
-                        ? '<div class="status-input-group" id=valid-status> <span id="valid">VÁLIDO</span> </div>'
-                        : '<div class="status-input-group" id=invalid-status> <span id="invalid">INVÁLIDO</span> </div>'
-                    }
-                    
+                    ${status}
+                    </div>
+                    <div class="row-section">
+                    ${mecConformityStatus}
                     </div>
                     <label for="document-hash">Hash Registrado</label>
                     <div class="input-group">
@@ -113,8 +153,8 @@ export class TransactionController {
                     </div>
                     </div>
                     </div>
-                    `,
-                  )
+                    `
+                  })
                   .join('')}
           <div class="action-buttons">
             <button class="btn" id="return-to-selector">Voltar</button>
@@ -180,12 +220,24 @@ export class TransactionController {
                     <div class="row-section">
                     <div class="input-group">
                         <select id="status">
-                            <option value="true">VÁLIDO</option>
-                            <option value="false">INVÁLIDO</option>
+                            <option value="0">VÁLIDO</option>
+                            <option value="1">INVÁLIDO</option>
+                            <option value="2">CANCELADO</option>
                         </select>
                     </div>
                     </div>
                 </div>
+                <div class="label-field-row">
+                <input
+                  type="checkbox"
+                  id="validateDiploma"
+                  name="validateDiploma"
+                  unchecked
+                />
+                <label for="validateDiploma"
+                  >Verificar Conformidade do Diploma Digital junto ao MEC</label
+                >
+              </div>
                 <div class="action-buttons">
             <button class="btn" id="return-to-selector">Voltar</button>
             <button class="btn" type="submit" value="updateStatus">Atualizar Status</button>

@@ -5,5 +5,7 @@ export class RecordDto {
 
   exists: boolean
 
-  valid: boolean
+  status: bigint
+
+  mecConformityStatus: bigint
 }

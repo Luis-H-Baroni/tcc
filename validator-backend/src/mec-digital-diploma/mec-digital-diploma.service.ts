@@ -6,6 +6,7 @@ import { MecDigitalDiplomaConformityResultDto } from 'src/dtos/mec-digital-diplo
 @Injectable()
 export class MecDigitalDiplomaService {
   async verifyDiploma(file: any) {
+    console.log(file)
     const formData = new FormData()
 
     formData.append('file', file.buffer, file.originalname)

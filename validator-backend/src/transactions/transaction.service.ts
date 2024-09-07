@@ -8,6 +8,8 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { RecordDto } from 'src/dtos/record.dto'
+import { MecDigitalDiplomaService } from 'src/mec-digital-diploma/mec-digital-diploma.service'
+import { MecConformityStatus } from 'src/enums'
 
 @Injectable()
 export class TransactionService {
@@ -17,13 +19,16 @@ export class TransactionService {
     @Inject('ETHERS_WALLET') private readonly wallet: Wallet,
     @Inject('ETHERS_CONTRACT') private readonly contract: Contract,
     private readonly configService: ConfigService,
+    private readonly mecDigitalDiplomaService: MecDigitalDiplomaService,
   ) {}
 
   async buildContractTransaction(
     publicKey: string,
     documentHash: string,
     contractMethod: string,
-    status?: string,
+    validateDigitalDiploma: string,
+    status?: number,
+    file?: any,
   ) {
     const validMethods = this.configService.get('contract.methods')
 
@@ -31,15 +36,20 @@ export class TransactionService {
       throw new BadRequestException('Invalid contract method')
 
     const hashedPublicKey = ethers.keccak256(publicKey)
-
-    const nonce = await this.wallet.getNonce()
-    console.log('nonce', nonce)
     const transactionParams = {
       documentHash,
       hashedPublicKey,
     }
-    if (contractMethod === 'updateStatus')
-      transactionParams['status'] = this.parseBoolean(status)
+
+    if (contractMethod === 'updateStatus') transactionParams['status'] = status
+
+    if (this.parseBoolean(validateDigitalDiploma)) {
+      const report = await this.mecDigitalDiplomaService.verifyDiploma(file)
+      transactionParams['mecConformityStatus'] =
+        MecConformityStatus[report.status]
+    } else {
+      transactionParams['mecConformityStatus'] = MecConformityStatus['NULL']
+    }
 
     console.log('parametros da transação', transactionParams)
     const contractTransaction = await this.contract[

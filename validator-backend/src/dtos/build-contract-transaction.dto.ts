@@ -5,5 +5,7 @@ export class BuildContractTransactionDto {
 
   documentHash: string
 
-  status?: string
+  status?: number
+
+  validateDigitalDiploma: string
 }
