@@ -9,7 +9,8 @@ export async function randomMnemonicPhrase(transaction) {
 
 export async function initializeWallet(mnemonic) {
   const provider = await new ethers.JsonRpcProvider(
-    "https://rpc-amoy.polygon.technology/"
+    //"https://rpc-amoy.polygon.technology/"
+    "http://localhost:8545"
   );
 
   const testWallet = new ethers.Wallet(
@@ -28,7 +29,7 @@ export async function initializeWallet(mnemonic) {
   );
 
   //wallet = await ethers.Wallet.fromPhrase(mnemonic, provider);
-  wallet = testnetWallet;
+  wallet = testWallet2;
 
   console.log("wallet", wallet);
   return wallet;

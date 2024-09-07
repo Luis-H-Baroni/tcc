@@ -9,7 +9,7 @@ export function handleClick(event) {
             <button class="btn" id="verify-hash" type="submit" value="verifyHash" disabled>
               Verificar
             </button>
-            <button class="btn" id="store-hash" type="submit" value="storeHash" disabled>
+            <button class="btn" id="store-hash" type="submit" value="confirmStoreHash" disabled>
               Registrar
             </button>
             <button class="btn" id="verify-ownership" type="submit" value="verifyOwnership" disabled>
