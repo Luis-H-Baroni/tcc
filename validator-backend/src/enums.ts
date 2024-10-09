@@ -8,6 +8,6 @@ export const Status = {
 export const MecConformityStatus = {
   VALID: 0,
   INVALID: 1,
-  INDETERMINATE: 2,
+  INDETERMINATED: 2,
   NULL: 3,
 }

@@ -1,5 +1,4 @@
 import { Contract, ethers, TransactionResponse, Wallet } from 'ethers'
-
 import {
   BadRequestException,
   Inject,
@@ -7,7 +6,6 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { RecordDto } from 'src/dtos/record.dto'
 import { MecDigitalDiplomaService } from 'src/mec-digital-diploma/mec-digital-diploma.service'
 import { MecConformityStatus } from 'src/enums'
 import { BlockchainService } from 'src/blockchain/blockchain.service'

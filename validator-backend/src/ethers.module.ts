@@ -16,10 +16,7 @@ import { ConfigService } from '@nestjs/config'
     },
     {
       provide: 'ETHERS_WALLET',
-      useFactory: (
-        provider: ethers.JsonRpcProvider,
-        configService: ConfigService,
-      ) => {
+      useFactory: (provider: ethers.JsonRpcProvider, configService: ConfigService) => {
         const privateKey = configService.get('wallet.privateKey')
         return new ethers.Wallet(privateKey, provider)
       },
@@ -27,16 +24,9 @@ import { ConfigService } from '@nestjs/config'
     },
     {
       provide: 'ETHERS_CONTRACT',
-      useFactory: (
-        provider: ethers.JsonRpcProvider,
-        configService: ConfigService,
-      ) => {
+      useFactory: (provider: ethers.JsonRpcProvider, configService: ConfigService) => {
         const contractAddress = configService.get('contract.address')
-        return new ethers.Contract(
-          contractAddress,
-          contractArtifact.abi,
-          provider,
-        )
+        return new ethers.Contract(contractAddress, contractArtifact.abi, provider)
       },
       inject: ['ETHERS_PROVIDER', ConfigService],
     },
