@@ -184,6 +184,18 @@ body {
   background-color: red;
 }
 
+#cancelled-status {
+  background-color: dimgray;
+}
+
+#null-status {
+  background-color: dimgray;
+}
+
+#indeterminated-status {
+  background-color: orange;
+}
+
 .status-input-group input {
   flex: 1;
   border: none;
