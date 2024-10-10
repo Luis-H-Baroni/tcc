@@ -1,7 +1,6 @@
-import { Contract, ethers, TransactionResponse, Wallet } from 'ethers'
+import { ethers, TransactionResponse } from 'ethers'
 import {
   BadRequestException,
-  Inject,
   Injectable,
   ServiceUnavailableException,
 } from '@nestjs/common'

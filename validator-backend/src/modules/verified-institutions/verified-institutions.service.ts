@@ -18,6 +18,10 @@ export class VerifiedInstitutionsService {
     return this.verifiedInstitutionsRepository.save({ ...verifiedInstitution, createdAt })
   }
 
+  async update(verifiedInstitution: VerifiedInstitution): Promise<VerifiedInstitution> {
+    return this.verifiedInstitutionsRepository.save(verifiedInstitution)
+  }
+
   async findAll(): Promise<VerifiedInstitution[]> {
     return this.verifiedInstitutionsRepository.find()
   }
