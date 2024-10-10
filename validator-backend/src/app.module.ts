@@ -8,6 +8,7 @@ import configuration from './config/configuration'
 import { VerifiedInstitutionsModule } from './modules/verified-institutions/verified-institutions.module'
 import { DatabaseConfigService } from './database/database-config.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { AuthModule } from './modules/auth/auth.module'
 
 @Module({
   imports: [
@@ -16,11 +17,12 @@ import { TypeOrmModule } from '@nestjs/typeorm'
     MecDigitalDiplomaModule,
     BlockchainModule,
     RecordsModule,
+    VerifiedInstitutionsModule,
+    AuthModule,
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConfigService,
       inject: [DatabaseConfigService],
     }),
-    VerifiedInstitutionsModule,
   ],
   controllers: [],
   providers: [],

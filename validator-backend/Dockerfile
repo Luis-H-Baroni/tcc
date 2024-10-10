@@ -4,16 +4,14 @@ FROM node:20.16.0-alpine
 # Define o diretório de trabalho na imagem
 WORKDIR /app
 
-# Copia o package.json e o package-lock.json para a imagem
 COPY package*.json ./
 
-# Instala as dependências do projeto
+RUN ls /app
+
 RUN npm install
 
-# Copia o restante dos arquivos da aplicação para a imagem
 COPY . .
 
-# Compila o TypeScript para JavaScript
 RUN npm run build
 
 # Define a variável de ambiente para produção

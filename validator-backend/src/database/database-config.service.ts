@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm'
+import { User } from 'src/modules/users/users.entity'
 import { VerifiedInstitution } from 'src/modules/verified-institutions/verified-institutions.entity'
 
 @Injectable()
@@ -14,7 +15,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       username: this.configService.get('database.username'),
       password: this.configService.get('database.password'),
       database: this.configService.get('database.name'),
-      entities: [VerifiedInstitution],
+      entities: [VerifiedInstitution, User],
       synchronize: true,
     }
     console.log(config)
