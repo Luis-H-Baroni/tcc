@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ethers } from 'ethers'
-import { BlockchainService } from 'src/blockchain/blockchain.service'
+import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
 import { RecordDto } from 'src/dtos/record.dto'
 
 @Injectable()

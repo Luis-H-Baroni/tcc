@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { TransactionsController } from 'src/transactions/transactions.controller'
-import { TransactionsService } from 'src/transactions/transactions.service'
-import { MecDigitalDiplomaService } from 'src/mec-digital-diploma/mec-digital-diploma.service'
-import { BlockchainService } from 'src/blockchain/blockchain.service'
+import { TransactionsController } from 'src/modules/transactions/transactions.controller'
+import { TransactionsService } from 'src/modules/transactions/transactions.service'
+import { MecDigitalDiplomaService } from 'src/modules/mec-digital-diploma/mec-digital-diploma.service'
+import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
 import { ConfigService } from '@nestjs/config'
 
 describe('TransactionController', () => {

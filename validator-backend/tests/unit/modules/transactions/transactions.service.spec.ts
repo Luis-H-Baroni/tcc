@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { TransactionsService } from 'src/transactions/transactions.service'
+import { TransactionsService } from 'src/modules/transactions/transactions.service'
 import { ServiceUnavailableException } from '@nestjs/common'
 import { MecConformityStatus, Status } from 'src/enums'
 import { ethers } from 'ethers'
 import { ConfigService } from '@nestjs/config'
-import { BlockchainService } from 'src/blockchain/blockchain.service'
-import { MecDigitalDiplomaService } from 'src/mec-digital-diploma/mec-digital-diploma.service'
+import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
+import { MecDigitalDiplomaService } from 'src/modules/mec-digital-diploma/mec-digital-diploma.service'
 
 describe('TransactionService', () => {
   let transactionService: TransactionsService

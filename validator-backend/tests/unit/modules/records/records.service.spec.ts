@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { RecordsService } from 'src/records/records.service'
-import { BlockchainService } from 'src/blockchain/blockchain.service'
+import { RecordsService } from 'src/modules/records/records.service'
+import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
 import { ConfigService } from '@nestjs/config'
 import { ethers } from 'ethers'
 

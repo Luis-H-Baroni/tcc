@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { MecDigitalDiplomaController } from 'src/mec-digital-diploma/mec-digital-diploma.controller'
-import { MecDigitalDiplomaService } from 'src/mec-digital-diploma/mec-digital-diploma.service'
+import { MecDigitalDiplomaController } from 'src/modules/mec-digital-diploma/mec-digital-diploma.controller'
+import { MecDigitalDiplomaService } from 'src/modules/mec-digital-diploma/mec-digital-diploma.service'
 
 describe('MecDigitalDiplomaController', () => {
   let controller: MecDigitalDiplomaController

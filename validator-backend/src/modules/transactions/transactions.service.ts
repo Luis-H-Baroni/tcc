@@ -6,9 +6,9 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { MecDigitalDiplomaService } from 'src/mec-digital-diploma/mec-digital-diploma.service'
+import { MecDigitalDiplomaService } from 'src/modules/mec-digital-diploma/mec-digital-diploma.service'
 import { MecConformityStatus } from 'src/enums'
-import { BlockchainService } from 'src/blockchain/blockchain.service'
+import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
 
 @Injectable()
 export class TransactionsService {

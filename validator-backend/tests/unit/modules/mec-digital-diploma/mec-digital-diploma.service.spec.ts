@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { MecDigitalDiplomaService } from 'src/mec-digital-diploma/mec-digital-diploma.service'
+import { MecDigitalDiplomaService } from 'src/modules/mec-digital-diploma/mec-digital-diploma.service'
 
 describe('MecDigitalDiplomaService', () => {
   let service: MecDigitalDiplomaService

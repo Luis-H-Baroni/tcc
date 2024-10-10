@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { RecordsController } from 'src/records/records.controller'
-import { RecordsService } from 'src/records/records.service'
-import { BlockchainService } from 'src/blockchain/blockchain.service'
+import { RecordsController } from 'src/modules/records/records.controller'
+import { RecordsService } from 'src/modules/records/records.service'
+import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
 
 describe('RecordsController', () => {
   let controller: RecordsController

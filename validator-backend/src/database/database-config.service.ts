@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm'
-import { VerifiedInstitution } from 'src/verified-institutions/verified-institutions.entity'
+import { VerifiedInstitution } from 'src/modules/verified-institutions/verified-institutions.entity'
 
 @Injectable()
 export class DatabaseConfigService implements TypeOrmOptionsFactory {

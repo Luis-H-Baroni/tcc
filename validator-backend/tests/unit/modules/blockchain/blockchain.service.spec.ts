@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { BlockchainService } from 'src/blockchain/blockchain.service'
+import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
 import { mock } from 'node:test'
 
 const mockContract = {
