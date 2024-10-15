@@ -6,13 +6,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN ls /app
-
 RUN npm install
 
+# Copie o restante do código
 COPY . .
-
-RUN npm run build
 
 # Define a variável de ambiente para produção
 ENV NODE_ENV=production
@@ -21,4 +18,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Comando para iniciar a aplicação
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:dev"]

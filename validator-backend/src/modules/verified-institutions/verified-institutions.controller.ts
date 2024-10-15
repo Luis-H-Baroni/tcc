@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common'
 import { VerifiedInstitution } from './verified-institutions.entity'
 import { VerifiedInstitutionsService } from './verified-institutions.service'
 import { CreateVerifiedInstitutionDto } from 'src/dtos/create-verified-institution.dto'
+import { updatedVerifiedInstitutionTemplate } from 'src/views/update-verified-institution'
 
 @Controller('verified-institutions')
 export class VerifiedInstitutionsController {
@@ -15,6 +16,15 @@ export class VerifiedInstitutionsController {
   ): Promise<VerifiedInstitution> {
     console.log('payload', payload)
     return await this.verifiedInstitutionsService.create(payload)
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() payload: CreateVerifiedInstitutionDto,
+  ): Promise<string> {
+    const updatedInstitution = await this.verifiedInstitutionsService.update(id, payload)
+    return updatedVerifiedInstitutionTemplate(updatedInstitution)
   }
 
   @Get()

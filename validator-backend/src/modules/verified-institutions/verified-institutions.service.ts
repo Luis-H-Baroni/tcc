@@ -15,22 +15,44 @@ export class VerifiedInstitutionsService {
     verifiedInstitution: CreateVerifiedInstitutionDto,
   ): Promise<VerifiedInstitution> {
     const createdAt = new Date()
-    return this.verifiedInstitutionsRepository.save({ ...verifiedInstitution, createdAt })
+    const updatedAt = new Date()
+    return await this.verifiedInstitutionsRepository.save({
+      ...verifiedInstitution,
+      createdAt,
+      updatedAt,
+    })
   }
 
-  async update(verifiedInstitution: VerifiedInstitution): Promise<VerifiedInstitution> {
-    return this.verifiedInstitutionsRepository.save(verifiedInstitution)
+  async update(
+    id: number,
+    verifiedInstitution: CreateVerifiedInstitutionDto,
+  ): Promise<VerifiedInstitution> {
+    const numberId = Number(id)
+    const updatedAt = new Date()
+    const verified = this.parseBoolean(verifiedInstitution.verified)
+    const updatedInstitution = {
+      id: numberId,
+      ...verifiedInstitution,
+      updatedAt,
+      verified,
+    }
+    return await this.verifiedInstitutionsRepository.save(updatedInstitution)
   }
 
   async findAll(): Promise<VerifiedInstitution[]> {
-    return this.verifiedInstitutionsRepository.find()
+    return await this.verifiedInstitutionsRepository.find()
   }
 
   async findOne(id: number): Promise<VerifiedInstitution> {
-    return this.verifiedInstitutionsRepository.findOneBy({ id })
+    return await this.verifiedInstitutionsRepository.findOneBy({ id })
   }
 
   async remove(id: number): Promise<void> {
     await this.verifiedInstitutionsRepository.delete(id)
+  }
+
+  parseBoolean(value: string | boolean): boolean {
+    if (typeof value === 'boolean') return value
+    return value === 'true'
   }
 }

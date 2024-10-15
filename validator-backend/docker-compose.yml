@@ -5,7 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '3000:3000'
-
+    volumes:
+      - .:/app # Mapeia o diretório local para o contêiner
     environment:
       - NODE_ENV=development
 

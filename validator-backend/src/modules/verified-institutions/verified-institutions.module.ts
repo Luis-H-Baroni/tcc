@@ -8,5 +8,6 @@ import { VerifiedInstitution } from './verified-institutions.entity'
   imports: [TypeOrmModule.forFeature([VerifiedInstitution])],
   controllers: [VerifiedInstitutionsController],
   providers: [VerifiedInstitutionsService],
+  exports: [VerifiedInstitutionsService],
 })
 export class VerifiedInstitutionsModule {}

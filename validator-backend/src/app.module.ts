@@ -9,7 +9,9 @@ import { VerifiedInstitutionsModule } from './modules/verified-institutions/veri
 import { DatabaseConfigService } from './database/database-config.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './modules/auth/auth.module'
-
+import { AdminPanelModule } from './modules/admin-panel/admin-panel.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 @Module({
   imports: [
     TransactionsModule,
@@ -19,6 +21,10 @@ import { AuthModule } from './modules/auth/auth.module'
     RecordsModule,
     VerifiedInstitutionsModule,
     AuthModule,
+    AdminPanelModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, 'modules', 'admin-panel', 'public'),
+    }),
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConfigService,
       inject: [DatabaseConfigService],

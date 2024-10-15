@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/admin-panel.css" />
+    <script src="./htmx.min.js"></script>
+    <script src="./admin-panel.js"></script>
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <div class="container" id="mainContainer">
+      <div class="main-content">
+        <h1>Admin Dashboard</h1>
+
+        <form hx-post="/auth/login" hx-swap="none" id="loginForm" class="login-form">
+          <div class="label-field">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+          <div class="label-field">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <div class="action-buttons">
+            <button type="submit" class="btn">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

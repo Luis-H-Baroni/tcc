@@ -33,5 +33,8 @@ export class VerifiedInstitution {
   createdAt: Date
 
   @Column()
+  updatedAt: Date
+
+  @Column()
   verified: boolean
 }
