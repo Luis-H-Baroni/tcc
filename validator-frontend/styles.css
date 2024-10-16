@@ -274,3 +274,86 @@ body {
 .action-buttons .btn:hover {
   background-color: #d0d0d0;
 }
+
+.horizontal-card {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  min-height: 60px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+/* Estilos para o modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 60%;
+  max-height: 80vh; /* Limita a altura do modal */
+  overflow-y: auto; /* Habilita o scroll vertical */
+  margin: auto;
+}
+
+/* Estilo para o botão de fechar */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.data-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  overflow-y: auto;
+}
+
+.extra-info {
+  display: none; /* Escondido por padrão */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+/* Estilo para o botão de mais informações */
+.more-info-btn {
+  padding: 10px;
+  background-color: cornflowerblue;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 20px;
+  color: white;
+}
+
+.more-info-btn:hover {
+  background-color: #0056b3;
+}
