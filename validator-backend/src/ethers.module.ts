@@ -30,7 +30,13 @@ import { ConfigService } from '@nestjs/config'
       },
       inject: ['ETHERS_PROVIDER', ConfigService],
     },
+    {
+      provide: 'ETHERS_INTERFACE',
+      useFactory: () => {
+        return new ethers.Interface(contractArtifact.abi)
+      },
+    },
   ],
-  exports: ['ETHERS_PROVIDER', 'ETHERS_WALLET', 'ETHERS_CONTRACT'],
+  exports: ['ETHERS_PROVIDER', 'ETHERS_WALLET', 'ETHERS_CONTRACT', 'ETHERS_INTERFACE'],
 })
 export class EthersModule {}

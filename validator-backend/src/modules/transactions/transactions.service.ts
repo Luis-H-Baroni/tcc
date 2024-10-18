@@ -55,6 +55,25 @@ export class TransactionsService {
   }
 
   async broadcastContractTransaction(signedTransaction: string) {
+    const transactionObject =
+      await this.blockchainService.parseSignedTransaction(signedTransaction)
+
+    const decodedData = await this.blockchainService.decodeContractTransactionData(
+      transactionObject.data,
+    )
+
+    if (decodedData.name === 'storeRecord' || decodedData.name === 'updateRecordStatus') {
+      const recoveredPublicKey =
+        await this.blockchainService.recoverSignerPublicKey(signedTransaction)
+
+      const hashedRecoveredPublicKey = ethers.keccak256(recoveredPublicKey)
+
+      console.log('comparing hashed public keys', hashedRecoveredPublicKey)
+      if (!decodedData.args.includes(hashedRecoveredPublicKey)) {
+        throw new BadRequestException('Public key does not match')
+      }
+    }
+
     const broadcastedTransaction: TransactionResponse =
       await this.blockchainService.broadcastTransaction(signedTransaction)
 
@@ -63,6 +82,13 @@ export class TransactionsService {
 
     console.log(result)
     return result
+  }
+
+  async verifySenderPublicKey(senderPublicKey: string, signedTransaction: string) {
+    const recoveredPublicKey =
+      await this.blockchainService.recoverSignerPublicKey(signedTransaction)
+
+    return recoveredPublicKey === senderPublicKey
   }
 
   private parseBoolean(value: string) {

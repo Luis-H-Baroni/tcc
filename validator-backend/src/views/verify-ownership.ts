@@ -45,22 +45,17 @@ export function verifyOwnershipTemplate(documentHash: string, publicKey: string)
                 </div>`
 }
 
-export function verifyOwnershipNotOwnerTemplate(documentHash: string, publicKey: string) {
+export function verifyOwnershipNotOwnerTemplate(documentHash: string) {
   return `
     <div class="label-field-section">
-      <label>Registro não Encontrado para sua Chave Pública</label>
+      <label>Registro não encontrado para sua Chave Pública</label>
               <div class="label-field">
                   <label for="document-hash">Hash do Documento</label>
                   <div class="input-group">
                       <input type="text" id="document-hash" value=${documentHash} readonly>
                   </div>
               </div>
-              <div class="label-field">
-                  <label for="owner-public-key">Chave Pública do Emissor</label>
-                  <div class="input-group">
-                      <input type="text" id="owner-public-key" value=${publicKey} readonly>
-                  </div>
-              </div>
+              
               <div class="action-buttons">
           <button class="btn" id="return-to-selector">Voltar</button>
           

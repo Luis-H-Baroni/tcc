@@ -3,9 +3,10 @@ import { VerifiedInstitutionsController } from './verified-institutions.controll
 import { VerifiedInstitutionsService } from './verified-institutions.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { VerifiedInstitution } from './verified-institutions.entity'
+import { AuthModule } from '../auth/auth.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([VerifiedInstitution])],
+  imports: [TypeOrmModule.forFeature([VerifiedInstitution]), AuthModule],
   controllers: [VerifiedInstitutionsController],
   providers: [VerifiedInstitutionsService],
   exports: [VerifiedInstitutionsService],

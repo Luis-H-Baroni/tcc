@@ -8,6 +8,7 @@ export class BlockchainService {
     private readonly provider: ethers.JsonRpcProvider,
     @Inject('ETHERS_WALLET') private readonly wallet: Wallet,
     @Inject('ETHERS_CONTRACT') private readonly contract: Contract,
+    @Inject('ETHERS_INTERFACE') private readonly iface: ethers.Interface,
   ) {}
 
   async buildContractTransaction(contractMethod: string, transactionParams: any) {
@@ -44,5 +45,49 @@ export class BlockchainService {
       console.log(error)
       throw error
     }
+  }
+
+  async parseSignedTransaction(signedTransaction: string) {
+    const transactionObject = ethers.Transaction.from(signedTransaction)
+    console.log('tr', transactionObject)
+
+    return transactionObject
+  }
+
+  async recoverSignerPublicKey(signedTransaction: string) {
+    const transactionObject = await this.parseSignedTransaction(signedTransaction)
+
+    const recoveredPublicKey = transactionObject.fromPublicKey
+    console.log('recoveredPublicKey', recoveredPublicKey)
+    if (recoveredPublicKey) return recoveredPublicKey
+
+    const populatedTransaction = {
+      chainId: transactionObject.chainId,
+      data: transactionObject.data,
+      gasLimit: transactionObject.gasLimit,
+      maxFeePerGas: transactionObject.maxFeePerGas,
+      maxPriorityFeePerGas: transactionObject.maxPriorityFeePerGas,
+      nonce: transactionObject.nonce,
+      to: transactionObject.to,
+      type: transactionObject.type,
+    }
+
+    const txBytes = ethers.Transaction.from(populatedTransaction).unsignedSerialized
+
+    const hashedPopulatedTransaction = ethers.keccak256(txBytes)
+
+    const publicKey = ethers.SigningKey.recoverPublicKey(
+      hashedPopulatedTransaction,
+      transactionObject.signature,
+    )
+    console.log('fallback recoveredPublicKey', publicKey)
+
+    return publicKey
+  }
+
+  async decodeContractTransactionData(data: string) {
+    const decodedData = this.iface.parseTransaction({ data })
+    console.log('decodedData', decodedData)
+    return decodedData
   }
 }

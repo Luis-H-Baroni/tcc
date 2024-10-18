@@ -9,6 +9,9 @@ export class VerifiedInstitution {
   publicKey: string
 
   @Column()
+  abbreviation: string
+
+  @Column()
   name: string
 
   @Column()

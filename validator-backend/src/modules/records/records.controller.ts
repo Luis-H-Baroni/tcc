@@ -33,7 +33,7 @@ export class RecordsController {
       const isOwner = await this.recordsService.verifyOwnership(documentHash, publicKey)
       console.log('é dono', isOwner)
 
-      if (!isOwner) return verifyOwnershipNotOwnerTemplate(documentHash, publicKey)
+      if (!isOwner) return verifyOwnershipNotOwnerTemplate(documentHash)
 
       return verifyOwnershipTemplate(documentHash, publicKey)
     } catch (error) {

@@ -4,7 +4,11 @@ import { TransactionsService } from './transactions.service'
 import { BuildContractTransactionDto } from 'src/dtos/build-contract-transaction.dto'
 import { BroadcastContractTransactionDto } from 'src/dtos/broadcast-contract-transaction.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { broadcastContractTransactionSuccessTemplate } from 'src/views/broadcast-contract-transaction'
+import {
+  broadcastContractTransactionInsufficientFundsTemplate,
+  broadcastContractTransactionSuccessTemplate,
+} from 'src/views/broadcast-contract-transaction'
+import { isError } from 'ethers'
 
 @Controller('transactions')
 export class TransactionsController {
@@ -43,6 +47,8 @@ export class TransactionsController {
         result.hash,
       )
     } catch (error) {
+      if (isError(error, 'INSUFFICIENT_FUNDS'))
+        return broadcastContractTransactionInsufficientFundsTemplate()
       console.log(error)
       throw error
     }

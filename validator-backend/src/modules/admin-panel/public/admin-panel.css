@@ -28,6 +28,7 @@ h1 {
   padding: 20px;
   width: 100%;
   max-width: 500px;
+  margin-top: 40px;
 }
 
 /* Navbar */
@@ -115,8 +116,9 @@ input:focus {
 }
 
 .records {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
 }
 
@@ -183,4 +185,16 @@ input:focus {
 .card-content {
   font-size: 16px;
   color: #666;
+}
+
+.dashboard-header {
+  display: flex;
+}
+
+.dashboard-title {
+  width: 100%;
+}
+
+.dashboard-placeholder {
+  width: 68.4625px;
 }

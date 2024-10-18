@@ -7,7 +7,17 @@ import { RecordDto } from 'src/dtos/record.dto'
 export class RecordsService {
   constructor(private blockchainService: BlockchainService) {}
 
+  createCustomTimeout(seconds): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('bla bla')
+        resolve()
+      }, seconds * 1000)
+    })
+  }
+
   async getRecords(documentHash: string) {
+    await this.createCustomTimeout(3)
     const records: RecordDto[] = await this.blockchainService.executeContractMethod(
       'getRecords',
       {
