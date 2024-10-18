@@ -15,8 +15,23 @@ export async function handleInitializeWallet(event) {
     console.log(mnemonicPhrase);
 
     document.getElementById("initializeWallet").innerHTML = `
-      <p>${mnemonicPhrase}</p>
-      <button id="continueNewWallet">Continuar</button>
+      <div class="label-field-section">
+        <div class="label-field" id="phraseField">
+          <div class="disclaimer">
+            <p>
+              Anote as palavras abaixo e guarde-as em um local seguro. Elas são
+              a única forma de recuperar sua carteira.
+            </p>
+          </div>
+              
+          <div class="input-group">
+            <textarea class="phrase" id="mnemonicPhrase" readonly>${mnemonicPhrase}</textarea>
+            <button id="copy-btn" class="copy-btn">📋</button>
+          </div>
+        <div class="action-buttons">
+          <button class="btn" id="continueNewWallet">Continuar</button>
+        </div>
+      </div>
     `;
   } else if (
     button.id === "existingWallet" ||
@@ -25,10 +40,15 @@ export async function handleInitializeWallet(event) {
     console.log("Carteira Existente");
 
     document.getElementById("initializeWallet").innerHTML = `
-      <label for="mnemonicPhrase">Mnemonic Phrase</label><br />
-
-      <input type="text" id="mnemonicPhrase" name="mnemonicPhrase" /><br />
-      <button id="continueExistingWallet">Continuar</button>
+      <div class="label-field-section">
+        <div class="label-field" id="phraseField">
+          <label for="mnemonicPhrase">Insira aqui o seu conjunto de palavras</label>
+          <div class="input-group">
+            <textarea class="phrase" id="mnemonicPhrase"></textarea>
+          </div>
+        <div class="action-buttons">
+          <button class="btn" id="continueExistingWallet">Continuar</button>
+        </div>
       `;
   } else if (button.id === "continueExistingWallet") {
     const mnemonicPhrase = document.getElementById("mnemonicPhrase").value;

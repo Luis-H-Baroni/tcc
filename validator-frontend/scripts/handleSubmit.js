@@ -76,15 +76,53 @@ export async function handleSubmit(event) {
     for (var pair of body.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
+
+    htmx.trigger("#transactionSelector", "htmx:xhr:loadstart");
     const transaction = await fetch(
       "http://localhost:3000/transactions/build",
       {
         method: "POST",
         body: body,
       }
-    ).then((response) => response.json());
+    )
+      .then((response) => {
+        if (response.status === 500) {
+          console.error("Error building transaction");
+          throw new Error("Error building transaction");
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        htmx.trigger("#transactionSelector", "htmx:responseError");
+        throw error;
+      });
 
     const populatedTransaction = await populateTransaction(transaction);
+    if (populatedTransaction.error) {
+      if (
+        populatedTransaction.reason ===
+        "Document already registered for this public key"
+      ) {
+        document.getElementById("transactionSelector").innerHTML = `
+        <div class="label-field-section">
+          <label>Documento já registrado para essa Chave Pública</label>
+          <div class="label-field">
+            <label for="document-hash">Hash do Documento</label>
+            <div class="input-group">
+              <input type="text" id="document-hash" value=${documentHash} readonly>
+            </div>
+          </div> 
+          
+          <div class="action-buttons">
+            <button class="btn" id="return-to-selector">Voltar</button>
+          </div>
+        </div>
+        `;
+        throw new Error("Document already registered for this public key");
+      }
+      htmx.trigger("#transactionSelector", "htmx:responseError");
+      throw new Error("Error populating transaction");
+    }
 
     const signedTransaction = await signTransaction(populatedTransaction);
 
@@ -128,7 +166,6 @@ export async function handleSubmit(event) {
           </div>
       </div>
   
-  
       <input type="hidden" id="transaction" name="transaction" value=${JSON.stringify(
         signedTransaction
       )} />
@@ -155,8 +192,6 @@ export async function handleSubmit(event) {
       <div class="label-field-section">
       <label>Verificar Documento</label>
       
-      
-  
       <div class="label-field">
         <label for="documentHash">Hash do Documento</label>
         <div class="input-group">
@@ -165,8 +200,6 @@ export async function handleSubmit(event) {
           )} readonly>
           </div>
       </div>
-  
-  
   
       <div class="action-buttons">
         <button class="btn" id="return-to-selector">Cancelar</button>
@@ -181,6 +214,7 @@ export async function handleSubmit(event) {
   }
 
   if (clickedButton.value === "verifyOwnership") {
+    htmx.trigger("#transactionSelector", "htmx:xhr:loadstart");
     const element = await fetch(
       `http://localhost:3000/records/${documentHash}/ownership/${publicKey}`,
       {
@@ -189,7 +223,18 @@ export async function handleSubmit(event) {
           "Content-Type": "application/json",
         },
       }
-    ).then((response) => response.text());
+    )
+      .then((response) => {
+        if (response.status === 500) {
+          console.error("Error getting ownership");
+          throw new Error("Error getting ownership");
+        }
+        return response.text();
+      })
+      .catch((error) => {
+        htmx.trigger("#transactionSelector", "htmx:responseError");
+        throw error;
+      });
 
     document.getElementById("transactionSelector").innerHTML = element;
   }
@@ -201,7 +246,7 @@ export async function handleSubmit(event) {
       : false;
 
     const status = Number(event.target.querySelector("#status").value);
-    console.log("status", status);
+    console.log("status from selector", status);
     const body = new FormData();
 
     body.append("contractMethod", contractMethod);
@@ -223,13 +268,25 @@ export async function handleSubmit(event) {
       console.log(pair[0] + ", " + pair[1]);
     }
 
+    htmx.trigger("#transactionSelector", "htmx:xhr:loadstart");
     const transaction = await fetch(
       "http://localhost:3000/transactions/build",
       {
         method: "POST",
         body: body,
       }
-    ).then((response) => response.json());
+    )
+      .then((response) => {
+        if (response.status === 500) {
+          console.error("Error building transaction");
+          throw new Error("Error building transaction");
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        htmx.trigger("#transactionSelector", "htmx:responseError");
+        throw error;
+      });
 
     const populatedTransaction = await populateTransaction(transaction);
 
@@ -261,7 +318,7 @@ export async function handleSubmit(event) {
                     populatedTransaction.gasLimit,
                   "ether"
                 )} readonly>
-                <label for="fee">ETH</label>
+                <label for="fee">POL</label>
             </div>
           </div>
       </div>

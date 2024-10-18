@@ -1,4 +1,4 @@
-export function handleClick(event) {
+export async function handleClick(event) {
   if (event.target.id === "return-to-selector") {
     document.getElementById("bottomCard").innerHTML = `
       <form id="transactionSelector">
@@ -24,5 +24,22 @@ export function handleClick(event) {
     const copyText = event.target.previousElementSibling.value;
     console.log(copyText);
     navigator.clipboard.writeText(copyText);
+  }
+
+  if (event.target.id === "openInstitutionsModal") {
+    const element = await fetch("http://localhost:3000/institutions/verified");
+
+    document.getElementById("institutionsList").outerHTML =
+      await element.text();
+  }
+
+  if (event.target.id === "moreInfoBtn") {
+    const targetId = event.target.getAttribute("data-target");
+    const extraInfo = document.getElementById(targetId);
+    if (extraInfo.style.display === "none" || extraInfo.style.display === "") {
+      extraInfo.style.display = "block";
+    } else {
+      extraInfo.style.display = "none";
+    }
   }
 }

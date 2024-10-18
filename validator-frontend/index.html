@@ -9,21 +9,32 @@
     <script type="module" src="./index.js"></script>
   </head>
   <body>
+    <div class="top-content">
+      <button id="openInstitutionsModal" class="btn">
+        Instituições Verificadas
+      </button>
+      <button id="openRequestModal" class="btn">
+        Quero verificar minha instituição
+      </button>
+    </div>
     <main class="main-content">
       <div class="card-container">
         <div class="card">
           <div class="initialize-section">
-            <label>Entre com uma carteira</label>
-            <div class="initialize-buttons" id="initializeWallet">
-              <button class="initialize-button" id="newWallet">
-                Nova Carteira
-              </button>
-              <button class="initialize-button" id="existingWallet">
-                Carteira Existente
-              </button>
+            <div class="label-field-section">
+              <label for="carteira">Entre com sua carteira</label>
+              <div class="label-field">
+                <div class="action-buttons" id="initializeWallet">
+                  <button class="btn" id="newWallet">Nova Carteira</button>
+                  <button class="btn" id="existingWallet">
+                    Carteira Existente
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
         <div class="card" id="bottomCard">
           <form id="transactionSelector">
             <div class="upload-section">
@@ -60,6 +71,134 @@
               </div>
             </div>
           </form>
+        </div>
+
+        <div id="institutionsModal" class="modal">
+          <div class="modal-content">
+            <span id="closeInstitutions" class="close">&times;</span>
+            <h2>Instituições Verificadas</h2>
+            <div id="institutionsList" class="institutions-list"></div>
+          </div>
+        </div>
+
+        <div id="requestModal" class="modal">
+          <div class="modal-content">
+            <span id="closeRequest" class="close">&times;</span>
+            <h2>Pedido</h2>
+            <div class="request-info">
+              <p class="request-disclaimer">
+                Para enviar um pedido de verificação, preencha o formulário. Uma
+                checagem será feita e um retorno será enviado por email. Se
+                aprovado, a instituição será listada na página de Instituições
+                Verificadas. É importante que o pedido seja feito por um
+                representante da instituição.
+              </p>
+            </div>
+            <div class="request-form" id="requestForm">
+              <div class="institution-details" id="institutionDetails">
+                <div class="request-label-field">
+                  <label for="public-key">Chave Pública</label>
+                  <div class="request-input-group">
+                    <input type="text" name="publicKey" id="public-key" />
+                  </div>
+                </div>
+                <div class="label-field-row">
+                  <div class="request-label-field" id="label-field-25">
+                    <label for="institution-abbreviation"
+                      >Abreviação/Sigla</label
+                    >
+                    <div class="request-input-group">
+                      <input
+                        type="text"
+                        name="abbreviation"
+                        id="institution-abbreviation"
+                      />
+                    </div>
+                  </div>
+                  <div class="request-label-field">
+                    <label for="institution-name">Nome da Instituição</label>
+                    <div class="request-input-group">
+                      <input type="text" name="name" id="institution-name" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="label-field-row">
+                  <div class="request-label-field">
+                    <label for="institution-email">Email</label>
+                    <div class="request-input-group">
+                      <input type="text" name="email" id="institution-email" />
+                    </div>
+                  </div>
+                  <div class="request-label-field">
+                    <label for="institution-phone">Telefone</label>
+                    <div class="request-input-group">
+                      <input type="text" name="phone" id="institution-phone" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="request-label-field">
+                  <label for="institution-address">Endereço</label>
+                  <div class="request-input-group">
+                    <input
+                      type="text"
+                      name="address"
+                      id="institution-address"
+                    />
+                  </div>
+                </div>
+
+                <div class="label-field-row">
+                  <div class="request-label-field">
+                    <label for="institution-representative"
+                      >Representante</label
+                    >
+                    <div class="request-input-group">
+                      <input
+                        type="text"
+                        name="representative"
+                        id="institution-representative"
+                      />
+                    </div>
+                  </div>
+                  <div class="request-label-field">
+                    <label for="institution-representative-email"
+                      >Email do Representante</label
+                    >
+                    <div class="request-input-group">
+                      <input
+                        type="text"
+                        name="representativeEmail"
+                        id="institution-representative-email"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="request-label-field">
+                  <label for="institution-website">Website</label>
+                  <div class="request-input-group">
+                    <input
+                      type="text"
+                      name="website"
+                      id="institution-website"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <button
+                  hx-post="http://localhost:3000/institutions"
+                  hx-include="#institutionDetails"
+                  hx-target="#requestForm"
+                  class="btn"
+                  id="send-request"
+                >
+                  Enviar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
