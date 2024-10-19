@@ -1,3 +1,5 @@
+import { environment } from "./environment.js";
+
 export async function handleClick(event) {
   if (event.target.id === "return-to-selector") {
     document.getElementById("bottomCard").innerHTML = `
@@ -27,7 +29,9 @@ export async function handleClick(event) {
   }
 
   if (event.target.id === "openInstitutionsModal") {
-    const element = await fetch("http://localhost:3000/institutions/verified");
+    const element = await fetch(
+      `${environment.BACKEND_URL}/institutions/verified`
+    );
 
     document.getElementById("institutionsList").outerHTML =
       await element.text();

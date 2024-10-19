@@ -2,7 +2,7 @@ import { formatUnits } from "./utils.js";
 import { populateTransaction, signTransaction } from "./transactions.js";
 import { getWallet } from "./wallet.js";
 import { getUploadedFile } from "./handleChange.js";
-import { Status } from "./enums.js";
+import { environment } from "./environment.js";
 
 export async function handleSubmit(event) {
   event.preventDefault();
@@ -79,7 +79,7 @@ export async function handleSubmit(event) {
 
     htmx.trigger("#transactionSelector", "htmx:xhr:loadstart");
     const transaction = await fetch(
-      "http://localhost:3000/transactions/build",
+      `${environment.BACKEND_URL}/transactions/build`,
       {
         method: "POST",
         body: body,
@@ -128,7 +128,7 @@ export async function handleSubmit(event) {
 
     const element = `
     <form id="transactionBroadcast"
-      hx-post="http://localhost:3000/transactions/broadcast"
+      hx-post="${environment.BACKEND_URL}/transactions/broadcast"
       hx-swap="outerHTML"
       hx-include="[name='transaction']">
   
@@ -185,7 +185,7 @@ export async function handleSubmit(event) {
   if (clickedButton.value === "getRecords") {
     const element = `
     <form id="getRecords"
-      hx-get="http://localhost:3000/records/${documentHash}"
+      hx-get="${environment.BACKEND_URL}/records/${documentHash}"
       hx-swap="outerHTML"
       hx-params="none">
   
@@ -216,7 +216,7 @@ export async function handleSubmit(event) {
   if (clickedButton.value === "verifyOwnership") {
     htmx.trigger("#transactionSelector", "htmx:xhr:loadstart");
     const element = await fetch(
-      `http://localhost:3000/records/${documentHash}/ownership/${publicKey}`,
+      `${environment.BACKEND_URL}/records/${documentHash}/ownership/${publicKey}`,
       {
         method: "GET",
         headers: {
@@ -270,7 +270,7 @@ export async function handleSubmit(event) {
 
     htmx.trigger("#transactionSelector", "htmx:xhr:loadstart");
     const transaction = await fetch(
-      "http://localhost:3000/transactions/build",
+      `${environment.BACKEND_URL}/transactions/build`,
       {
         method: "POST",
         body: body,
@@ -294,7 +294,7 @@ export async function handleSubmit(event) {
 
     const element = `
     <form id="transactionBroadcast"
-      hx-post="http://localhost:3000/transactions/broadcast"
+      hx-post="${environment.BACKEND_URL}/transactions/broadcast"
       hx-swap="outerHTML"
       hx-include="[name='transaction']">
   
