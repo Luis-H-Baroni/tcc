@@ -18,6 +18,13 @@ function getStatus(status: number, type: 'status' | 'mecConformityStatus'): stri
   return statusMap[type][status]
 }
 
+function formatTimestamp(timestamp: string): string {
+  return new Date(Number(timestamp) * 1000).toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    dateStyle: 'short',
+  })
+}
+
 function renderRecord(record: RecordDto): string {
   const status = getStatus(Number(record.status), 'status')
   const mecConformityStatus = getStatus(
@@ -28,8 +35,14 @@ function renderRecord(record: RecordDto): string {
   return `
     <div class="record">
       <div class="label-field">
-        <div class="row-section">${status}</div>
-        <div class="row-section">${mecConformityStatus}</div>
+        <div class="status-section">
+          ${status}
+          <span>Última atualização em ${formatTimestamp(record.statusUpdatedAt)}</span>
+        </div>
+        <div class="status-section">
+          ${mecConformityStatus}
+          <span>Última atualização em ${formatTimestamp(record.mecConformityStatusUpdatedAt)}</span>
+        </div>
 
         <label for="document-hash">Hash Registrado</label>
         <div class="input-group">
@@ -40,6 +53,12 @@ function renderRecord(record: RecordDto): string {
         <div class="input-group">
           <input type="text" id="owner-public-key" value="${record.publicKey}" readonly>
         </div>
+
+        <label for="created-at">Data do registro</label>
+        <div class="input-group">
+          <input type="text" id="created-at" value="${formatTimestamp(record.createdAt)}" readonly>
+        </div>
+
       </div>
     </div>
   `

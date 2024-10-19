@@ -8,4 +8,10 @@ export class RecordDto {
   status: bigint
 
   mecConformityStatus: bigint
+
+  createdAt: string
+
+  statusUpdatedAt: string
+
+  mecConformityStatusUpdatedAt: string
 }
