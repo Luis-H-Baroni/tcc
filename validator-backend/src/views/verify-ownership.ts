@@ -6,12 +6,14 @@ export function verifyOwnershipTemplate(documentHash: string, publicKey: string)
                     <label for="document-hash">Hash do Documento</label>
                     <div class="input-group">
                         <input type="text" id="document-hash" value=${documentHash} readonly>
+                        <button id="copy-btn" class="copy-btn">📋</button>
                     </div>
                 </div>
                 <div class="label-field">
                     <label for="owner-public-key">Chave Pública do Emissor</label>
                     <div class="input-group">
                         <input type="text" id="owner-public-key" value=${publicKey} readonly>
+                        <button id="copy-btn" class="copy-btn">📋</button>
                     </div>
                 </div>
                 <div class="label-field">
@@ -53,6 +55,7 @@ export function verifyOwnershipNotOwnerTemplate(documentHash: string) {
                   <label for="document-hash">Hash do Documento</label>
                   <div class="input-group">
                       <input type="text" id="document-hash" value=${documentHash} readonly>
+                      <button id="copy-btn" class="copy-btn">📋</button>
                   </div>
               </div>
               

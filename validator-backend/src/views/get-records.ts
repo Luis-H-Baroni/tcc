@@ -18,7 +18,15 @@ function getStatus(status: number, type: 'status' | 'mecConformityStatus'): stri
   return statusMap[type][status]
 }
 
-function formatTimestamp(timestamp: string): string {
+function getTimestamp(timestamp: string): string {
+  const numberTimestamp = Number(timestamp)
+
+  if (numberTimestamp === 0) return `<span> - </span>`
+
+  return `<span>Última atualização em ${formatTimestamp(numberTimestamp)}</span>`
+}
+
+function formatTimestamp(timestamp: number): string {
   return new Date(Number(timestamp) * 1000).toLocaleString('pt-BR', {
     timeZone: 'America/Sao_Paulo',
     dateStyle: 'short',
@@ -31,32 +39,36 @@ function renderRecord(record: RecordDto): string {
     Number(record.mecConformityStatus),
     'mecConformityStatus',
   )
+  const statusUpdatedAt = getTimestamp(record.statusUpdatedAt)
+  const mecConformityStatusUpdatedAt = getTimestamp(record.mecConformityStatusUpdatedAt)
 
   return `
     <div class="record">
       <div class="label-field">
         <div class="status-section">
           ${status}
-          <span>Última atualização em ${formatTimestamp(record.statusUpdatedAt)}</span>
+          ${statusUpdatedAt}
         </div>
         <div class="status-section">
           ${mecConformityStatus}
-          <span>Última atualização em ${formatTimestamp(record.mecConformityStatusUpdatedAt)}</span>
+          ${mecConformityStatusUpdatedAt}
         </div>
 
         <label for="document-hash">Hash Registrado</label>
         <div class="input-group">
           <input type="text" id="document-hash" value="${record.hash}" readonly>
+          <button id="copy-btn" class="copy-btn">📋</button>
         </div>
 
         <label for="owner-public-key">Hash da Chave Pública do Emissor</label>
         <div class="input-group">
           <input type="text" id="owner-public-key" value="${record.publicKey}" readonly>
+          <button id="copy-btn" class="copy-btn">📋</button>
         </div>
 
         <label for="created-at">Data do registro</label>
         <div class="input-group">
-          <input type="text" id="created-at" value="${formatTimestamp(record.createdAt)}" readonly>
+          <input type="text" id="created-at" value="${formatTimestamp(Number(record.createdAt))}" readonly>
         </div>
 
       </div>
@@ -86,7 +98,7 @@ export function getRecordsNotFoundTemplate(documentHash: string) {
           <label for="document-hash">Hash Buscado</label>
           <div class="input-group">
             <input type="text" id="document-hash" value=${documentHash} readonly>
-                      
+            <button id="copy-btn" class="copy-btn">📋</button>          
           </div>
         </div>
       <div class="action-buttons">

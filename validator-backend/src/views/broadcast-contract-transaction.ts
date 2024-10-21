@@ -9,12 +9,14 @@ export function broadcastContractTransactionSuccessTemplate(
                     <label for="document-hash">Hash do Documento</label>
                     <div class="input-group">
                         <input type="text" id="document-hash" value=${documentHash} readonly>
+                        <button id="copy-btn" class="copy-btn">📋</button>
                     </div>
                 </div>
                 <div class="label-field">
                     <label for="transaction-hash">Transação</label>
                     <div class="input-group">
-                        <input type="text" id="transaction-hash" value=${hash} readonly>  
+                        <input type="text" id="transaction-hash" value=${hash} readonly>
+                        <button id="copy-btn" class="copy-btn">📋</button>  
                     </div>
                 </div>
 

@@ -13,7 +13,13 @@
       <div class="main-content">
         <h1>Admin Dashboard</h1>
 
-        <form hx-post="/auth/login" hx-swap="none" id="loginForm" class="login-form">
+        <form
+          hx-post="/auth/login"
+          hx-swap="none"
+          hx-trigger="click from:#loginButton"
+          id="loginForm"
+          class="login-form"
+        >
           <div class="label-field">
             <label for="username">Username</label>
             <input
@@ -36,7 +42,7 @@
           </div>
           <div id="loginInfo"></div>
           <div class="action-buttons">
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" id="loginButton" class="btn">Login</button>
           </div>
         </form>
       </div>

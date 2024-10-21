@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { VerifiedInstitution } from 'src/modules/verified-institutions/verified-institutions.entity'
 
 export function getVerifiedInstitutionsTemplate(institutions: VerifiedInstitution[]) {
@@ -6,6 +7,13 @@ export function getVerifiedInstitutionsTemplate(institutions: VerifiedInstitutio
         ${institutions.map(renderInstitution).join('')}
     </div>
   `
+}
+
+function formatTimestamp(timestamp: Date) {
+  return new Date(timestamp).toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    dateStyle: 'short',
+  })
 }
 
 function renderInstitution(institution: VerifiedInstitution) {
@@ -31,7 +39,7 @@ function renderInstitution(institution: VerifiedInstitution) {
                     <input
                       type="text"
                       id="hash-public-key"
-                      value="0xe9da5adbe534965c8bb4bdadd563b0c4c568d1e810ed3aad41a7b6aac440c69c"
+                      value="${ethers.id(institution.publicKey)}"
                       readonly=""
                     />
                     <button id="copy-btn" class="copy-btn">📋</button>
@@ -48,8 +56,8 @@ function renderInstitution(institution: VerifiedInstitution) {
                 <p>Website: ${institution.website}</p>
                 <p>Representante: ${institution.representative}</p>
                 <p>Email do Representante: ${institution.representativeEmail}</p>
-                <p>Data de Criação: ${institution.createdAt}</p>
-                <p>Data de Atualização: ${institution.updatedAt}</p>
+                <p>Data de Criação: ${formatTimestamp(institution.createdAt)}</p>
+                <p>Data de Atualização: ${formatTimestamp(institution.updatedAt)}</p>
               </div>
               
               `

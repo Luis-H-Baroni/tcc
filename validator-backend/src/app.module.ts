@@ -15,7 +15,7 @@ import { join } from 'path'
 @Module({
   imports: [
     TransactionsModule,
-    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration], envFilePath: '.env' }),
     MecDigitalDiplomaModule,
     BlockchainModule,
     RecordsModule,
