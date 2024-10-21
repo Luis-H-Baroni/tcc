@@ -1,3 +1,4 @@
+import { environment } from "./environment.js";
 import { fileIsUploaded } from "./handleChange.js";
 import { generateHash } from "./utils.js";
 import {
@@ -85,9 +86,12 @@ export async function handleInitializeWallet(event) {
           <div class="label-field">
               <label for="address">Seu endereço</label>
               <div class="input-group">
-                  <input type="text" id="address" value=${
+                  <a href="${environment.EXPLORER_URL}/address/${
+      wallet.address
+    }" target="_blank">${wallet.address}</a>
+                  <input type="text" hidden="true" id="address" value="${
                     wallet.address
-                  } readonly>
+                  }" readonly>
                   <button id="copy-btn" class="copy-btn">📋</button>
               </div>
           </div>

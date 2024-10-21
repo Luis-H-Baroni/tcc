@@ -13,7 +13,7 @@ export async function handleSubmit(event) {
   console.log("clickedButton", clickedButton.value);
 
   const contractMethod = clickedButton.value;
-  const publicKey = wallet.signingKey.publicKey;
+  const publicKey = wallet?.signingKey?.publicKey;
   const documentHash = localStorage.getItem("documentHash");
 
   if (clickedButton.value === "confirmStoreRecord") {
@@ -24,12 +24,14 @@ export async function handleSubmit(event) {
                     <label for="document-hash">Hash do Documento</label>
                     <div class="input-group">
                         <input type="text" id="document-hash" value=${documentHash} readonly>
+                        <button id="copy-btn" class="copy-btn">📋</button>
                     </div>
                 </div>
                 <div class="label-field">
                     <label for="owner-public-key">Chave Pública do Emissor</label>
                     <div class="input-group">
                         <input type="text" id="owner-public-key" value=${publicKey} readonly>
+                        <button id="copy-btn" class="copy-btn">📋</button>
                     </div>
                 </div>
                 <div class="label-field-row">
@@ -110,6 +112,7 @@ export async function handleSubmit(event) {
             <label for="document-hash">Hash do Documento</label>
             <div class="input-group">
               <input type="text" id="document-hash" value=${documentHash} readonly>
+              <button id="copy-btn" class="copy-btn">📋</button>
             </div>
           </div> 
           
@@ -130,8 +133,10 @@ export async function handleSubmit(event) {
     <form id="transactionBroadcast"
       hx-post="${environment.BACKEND_URL}/transactions/broadcast"
       hx-swap="outerHTML"
-      hx-include="[name='transaction']">
-  
+      hx-include="[name='transaction']"
+      hx-trigger="click from:#submitStore"
+      >
+      
       <div class="label-field-section">
       <label>Registrar Documento</label>
       <div class="label-field">
@@ -163,6 +168,7 @@ export async function handleSubmit(event) {
           <input type="text" id="documentHash" name="documentHash" value=${localStorage.getItem(
             "documentHash"
           )} readonly>
+          <button id="copy-btn" class="copy-btn">📋</button>
           </div>
       </div>
   
@@ -172,7 +178,7 @@ export async function handleSubmit(event) {
   
       <div class="action-buttons">
         <button class="btn" id="return-to-selector">Cancelar</button>
-        <button class="btn" type="submit"/>Confirmar</button>
+        <button class="btn" id="submitStore" type="submit"/>Confirmar</button>
       </div>
     </div>
     </form>
@@ -187,7 +193,9 @@ export async function handleSubmit(event) {
     <form id="getRecords"
       hx-get="${environment.BACKEND_URL}/records/${documentHash}"
       hx-swap="outerHTML"
-      hx-params="none">
+      hx-params="none"
+      hx-trigger="click from:#submitGetRecords"
+      >
   
       <div class="label-field-section">
       <label>Verificar Documento</label>
@@ -198,12 +206,13 @@ export async function handleSubmit(event) {
           <input type="text" id="documentHash" name="documentHash" value=${localStorage.getItem(
             "documentHash"
           )} readonly>
+          <button id="copy-btn" class="copy-btn">📋</button>
           </div>
       </div>
   
       <div class="action-buttons">
         <button class="btn" id="return-to-selector">Cancelar</button>
-        <button class="btn" type="submit"/>Confirmar</button>
+        <button class="btn" type="submit" id="submitGetRecords" />Confirmar</button>
       </div>
     </div>
     </form>
@@ -296,7 +305,9 @@ export async function handleSubmit(event) {
     <form id="transactionBroadcast"
       hx-post="${environment.BACKEND_URL}/transactions/broadcast"
       hx-swap="outerHTML"
-      hx-include="[name='transaction']">
+      hx-include="[name='transaction']"
+      hx-trigger="click from:#submitUpdate"
+      >
   
       <div class="label-field-section">
       <label>Registrar Documento</label>
@@ -329,6 +340,7 @@ export async function handleSubmit(event) {
           <input type="text" id="documentHash" name="documentHash" value=${localStorage.getItem(
             "documentHash"
           )} readonly>
+          <button id="copy-btn" class="copy-btn">📋</button>
           </div>
       </div>
   
@@ -339,7 +351,7 @@ export async function handleSubmit(event) {
   
       <div class="action-buttons">
         <button class="btn" id="return-to-selector">Cancelar</button>
-        <button class="btn" type="submit"/>Confirmar</button>
+        <button class="btn" type="submit" id="submitUpdate"/>Confirmar</button>
       </div>
     </div>
     </form>

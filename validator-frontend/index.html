@@ -94,12 +94,23 @@
                 representante da instituição.
               </p>
             </div>
-            <div class="request-form" id="requestForm">
+            <form
+              hx-post="/institutions"
+              hx-include="#institutionDetails"
+              hx-target="#requestForm"
+              class="request-form"
+              id="requestForm"
+            >
               <div class="institution-details" id="institutionDetails">
                 <div class="request-label-field">
                   <label for="public-key">Chave Pública</label>
                   <div class="request-input-group">
-                    <input type="text" name="publicKey" id="public-key" />
+                    <input
+                      type="text"
+                      name="publicKey"
+                      id="public-key"
+                      required
+                    />
                   </div>
                 </div>
                 <div class="label-field-row">
@@ -112,13 +123,19 @@
                         type="text"
                         name="abbreviation"
                         id="institution-abbreviation"
+                        required
                       />
                     </div>
                   </div>
                   <div class="request-label-field">
                     <label for="institution-name">Nome da Instituição</label>
                     <div class="request-input-group">
-                      <input type="text" name="name" id="institution-name" />
+                      <input
+                        type="text"
+                        name="name"
+                        id="institution-name"
+                        required
+                      />
                     </div>
                   </div>
                 </div>
@@ -127,13 +144,23 @@
                   <div class="request-label-field">
                     <label for="institution-email">Email</label>
                     <div class="request-input-group">
-                      <input type="text" name="email" id="institution-email" />
+                      <input
+                        type="text"
+                        name="email"
+                        id="institution-email"
+                        required
+                      />
                     </div>
                   </div>
                   <div class="request-label-field">
                     <label for="institution-phone">Telefone</label>
                     <div class="request-input-group">
-                      <input type="text" name="phone" id="institution-phone" />
+                      <input
+                        type="text"
+                        name="phone"
+                        id="institution-phone"
+                        required
+                      />
                     </div>
                   </div>
                 </div>
@@ -145,6 +172,7 @@
                       type="text"
                       name="address"
                       id="institution-address"
+                      required
                     />
                   </div>
                 </div>
@@ -159,6 +187,7 @@
                         type="text"
                         name="representative"
                         id="institution-representative"
+                        required
                       />
                     </div>
                   </div>
@@ -171,6 +200,7 @@
                         type="text"
                         name="representativeEmail"
                         id="institution-representative-email"
+                        required
                       />
                     </div>
                   </div>
@@ -182,25 +212,21 @@
                       type="text"
                       name="website"
                       id="institution-website"
+                      required
                     />
                   </div>
                 </div>
               </div>
               <div class="action-buttons">
-                <button
-                  hx-post="/institutions"
-                  hx-include="#institutionDetails"
-                  hx-target="#requestForm"
-                  class="btn"
-                  id="send-request"
-                >
+                <button class="btn" id="sendRequest" type="submit">
                   Enviar
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
     </main>
+    <footer>v0.9</footer>
   </body>
 </html>
