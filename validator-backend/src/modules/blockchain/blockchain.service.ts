@@ -11,7 +11,7 @@ export class BlockchainService {
     @Inject('ETHERS_INTERFACE') private readonly iface: ethers.Interface,
   ) {}
 
-  async buildContractTransaction(contractMethod: string, transactionParams: any) {
+  async buildContractTransaction(contractMethod: string, transactionParams: object) {
     console.log('parâmetros da transação', transactionParams)
     console.log('método do contrato', contractMethod)
 
@@ -27,7 +27,7 @@ export class BlockchainService {
     }
   }
 
-  async broadcastTransaction(signedTransaction: any) {
+  async broadcastTransaction(signedTransaction: string) {
     try {
       return await this.provider.broadcastTransaction(signedTransaction)
     } catch (error) {

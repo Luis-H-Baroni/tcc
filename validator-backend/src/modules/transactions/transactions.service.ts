@@ -30,7 +30,7 @@ export class TransactionsService {
     if (!validMethods.includes(contractMethod))
       throw new BadRequestException('Invalid contract method')
 
-    const hashedPublicKey = ethers.keccak256(publicKey)
+    const hashedPublicKey = ethers.id(publicKey)
 
     const transactionParams = {
       documentHash,
@@ -66,7 +66,7 @@ export class TransactionsService {
       const recoveredPublicKey =
         await this.blockchainService.recoverSignerPublicKey(signedTransaction)
 
-      const hashedRecoveredPublicKey = ethers.keccak256(recoveredPublicKey)
+      const hashedRecoveredPublicKey = ethers.id(recoveredPublicKey)
 
       console.log('comparing hashed public keys', hashedRecoveredPublicKey)
       if (!decodedData.args.includes(hashedRecoveredPublicKey)) {
