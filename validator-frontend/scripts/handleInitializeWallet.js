@@ -1,6 +1,6 @@
 import { environment } from "./environment.js";
 import { fileIsUploaded } from "./handleChange.js";
-import { generateHash } from "./utils.js";
+import { generateHashFromUtf8 } from "./utils.js";
 import {
   randomMnemonicPhrase,
   initializeWallet,
@@ -65,7 +65,7 @@ export async function handleInitializeWallet(event) {
       document.getElementById("verify-ownership").disabled = false;
     }
 
-    document.getElementById("initializeWallet").innerHTML = `
+    document.getElementById("initializeSection").innerHTML = `
       <div class="label-field-section">
           <div class="label-field">
               <label for="public-key">Sua chave pública</label>
@@ -77,7 +77,7 @@ export async function handleInitializeWallet(event) {
               </div>
               <label for="public-key">Hash da chave pública</label>
               <div class="input-group" id="hash-public-key-input">
-                  <input type="text" id="hash-public-key" value=${generateHash(
+                  <input type="text" id="hash-public-key" value=${generateHashFromUtf8(
                     wallet.signingKey.publicKey
                   )} readonly>
                   <button id="copy-btn" class="copy-btn">📋</button>

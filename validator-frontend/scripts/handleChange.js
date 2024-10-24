@@ -1,16 +1,17 @@
-import { generateHash, fileToBuffer } from "./utils.js";
+import {  fileToBuffer, generateHashFromBytesLike } from "./utils.js";
 import { walletIsInitialized } from "./wallet.js";
 
 let isFileUploaded = false;
 let uploadedFile = null;
 
 export async function handleChange(event) {
-  isFileUploaded = false;
   if (event.target.id === "file-upload") {
+    console.log("file-upload");
+    isFileUploaded = false;
     const file = event.target.files[0];
     if (file) {
       const buffer = await fileToBuffer(file);
-      const hash = generateHash(buffer);
+      const hash = generateHashFromBytesLike(buffer);
       console.log("hash", hash);
       localStorage.setItem("documentHash", hash);
 

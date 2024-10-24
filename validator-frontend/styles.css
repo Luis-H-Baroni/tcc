@@ -260,7 +260,10 @@ body {
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .input-group .copy-btn {
@@ -281,7 +284,6 @@ body {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 100%;
 }
 
 .action-buttons {
@@ -496,7 +498,7 @@ input:focus {
 }
 
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   display: flex;

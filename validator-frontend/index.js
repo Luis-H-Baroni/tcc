@@ -62,14 +62,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("htmx:xhr:loadstart", function (event) {
   console.log("loadstart element", event.detail.elt.id);
-  if (event.detail.elt.id === "send-request") return;
+  if (
+    event.detail.elt.id === "send-request" ||
+    event.detail.elt.id === "requestForm"
+  ) {
+    document.getElementById(event.detail.elt.id).innerHTML = "...";
+    return;
+  }
+
   document.getElementById(event.detail.elt.id).innerHTML =
     '<img id="loading" class="loading" src="assets/loading.svg" />';
 });
 
 document.addEventListener("htmx:responseError", function (event) {
   console.log("response error", event);
-  if (event.detail.elt.id === "send-request") {
+  if (
+    event.detail.elt.id === "send-request" ||
+    event.detail.elt.id === "requestForm"
+  ) {
     document.getElementById(
       event.detail.elt.id
     ).outerHTML = `<p>Erro ao realizar a operação. Tente novamente mais tarde ou entre em contato com o administrador.</p>

@@ -4,8 +4,12 @@ export function formatUnits(value, unit) {
   return ethers.formatUnits(value, unit);
 }
 
-export function generateHash(value) {
+export function generateHashFromBytesLike(value) {
   return ethers.keccak256(value);
+}
+
+export function generateHashFromUtf8(value) {
+  return ethers.id(value);
 }
 
 export async function fileToBuffer(file) {
