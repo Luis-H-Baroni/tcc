@@ -254,6 +254,10 @@ body {
   padding: 10px;
 }
 
+#statusLabel {
+  font-weight: bold;
+}
+
 #hash-public-key-input {
   display: flex;
   align-items: center;

@@ -46,10 +46,12 @@ function renderRecord(record: RecordDto): string {
     <div class="record">
       <div class="label-field">
         <div class="status-section">
+          <span id="statusLabel">Status</span>
           ${status}
           ${statusUpdatedAt}
         </div>
         <div class="status-section">
+          <span id="statusLabel">Conformidade MEC</span>
           ${mecConformityStatus}
           ${mecConformityStatusUpdatedAt}
         </div>
