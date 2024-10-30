@@ -13,7 +13,8 @@ const dev = {
 
 const prod = {
   BACKEND_URL:
-    "https://validator-backend-bzhra0fhh9epeacc.eastus2-01.azurewebsites.net",
+    //"https://validator-backend-bzhra0fhh9epeacc.eastus2-01.azurewebsites.net",
+    "http://localhost:3000",
   PROVIDER_URL: "https://polygon-rpc.com/",
   EXPLORER_URL: "https://polygonscan.com",
 };

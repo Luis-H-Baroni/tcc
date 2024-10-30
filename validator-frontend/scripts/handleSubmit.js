@@ -62,7 +62,10 @@ export async function handleSubmit(event) {
     const body = new FormData();
 
     body.append("contractMethod", contractMethod);
-    body.append("publicKey", publicKey);
+    body.append(
+      "publicKey",
+      "0x041797504339810d9d62c8cb0b9094567fcdb569be5fcb7c86999c8994e9d7bc1a3cfc5d80cef3ea6fd0fe38b5fc4298b8b3feb774b3d66ce0030a195eaed65070"
+    );
     body.append("documentHash", documentHash);
     body.append("validateDigitalDiploma", validateDigitalDiploma);
 
