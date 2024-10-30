@@ -21,7 +21,7 @@ export class TransactionsController {
     @UploadedFile() file,
   ) {
     try {
-      return this.transactionsService.buildContractTransaction(
+      return await this.transactionsService.buildContractTransaction(
         payload.publicKey,
         payload.documentHash,
         payload.contractMethod,

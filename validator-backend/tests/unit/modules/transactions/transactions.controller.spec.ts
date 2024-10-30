@@ -4,6 +4,7 @@ import { TransactionsService } from 'src/modules/transactions/transactions.servi
 import { MecDigitalDiplomaService } from 'src/modules/mec-digital-diploma/mec-digital-diploma.service'
 import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
 import { ConfigService } from '@nestjs/config'
+import { ethers } from 'ethers'
 
 describe('TransactionController', () => {
   let transactionController: TransactionsController
@@ -20,6 +21,7 @@ describe('TransactionController', () => {
         { provide: 'ETHERS_PROVIDER', useValue: {} },
         { provide: 'ETHERS_CONTRACT', useValue: {} },
         { provide: 'ETHERS_WALLET', useValue: {} },
+        { provide: 'ETHERS_INTERFACE', useValue: {} },
       ],
     }).compile()
 
@@ -66,7 +68,7 @@ describe('TransactionController', () => {
       )
     })
 
-    it('should throw an error', async () => {
+    it('should catch and throw an error', async () => {
       const error = new Error('mockedBuildError')
       jest.spyOn(transactionService, 'buildContractTransaction').mockRejectedValue(error)
 
@@ -118,6 +120,23 @@ describe('TransactionController', () => {
           documentHash: 'mockedDocumentHash',
         }),
       ).rejects.toThrow(error)
+    })
+
+    it('should return insufficient funds template when ethers error is insufficient funds', async () => {
+      const error = ethers.makeError('insufficient funds', 'INSUFFICIENT_FUNDS')
+      jest
+        .spyOn(transactionService, 'broadcastContractTransaction')
+        .mockRejectedValue(error)
+
+      const result = await transactionController.broadcastContractTransaction({
+        transaction: 'mockedTransaction',
+        documentHash: 'mockedDocumentHash',
+      })
+
+      expect(result).toContain('<p>Saldo insuficiente</p>')
+      expect(result).toContain(
+        '<p>A carteira não possui saldo suficiente para realizar a transação.</p>',
+      )
     })
   })
 })

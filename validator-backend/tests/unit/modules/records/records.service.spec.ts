@@ -17,6 +17,7 @@ describe('RecordsService', () => {
         { provide: 'ETHERS_PROVIDER', useValue: {} },
         { provide: 'ETHERS_CONTRACT', useValue: {} },
         { provide: 'ETHERS_WALLET', useValue: {} },
+        { provide: 'ETHERS_INTERFACE', useValue: {} },
       ],
     }).compile()
 
@@ -88,7 +89,7 @@ describe('RecordsService', () => {
         '0x048318535b54105d4a7aae60c08fc45f9687181b4fdfc625bd1a753fa7397fed753547f11ca8696646f2f3acb08e31016afac23e630c5d11f59f61fef57b0d2aa5'
       const mockDocumentHash =
         '0x1234567890123455589012345678901234567890123456789012345678901234'
-      const hashedPublicKey = ethers.keccak256(mockPublicKey)
+      const hashedPublicKey = ethers.id(mockPublicKey)
       const mockRecords = [
         {
           hash: 'mockedHash',
@@ -96,6 +97,9 @@ describe('RecordsService', () => {
           publicKey: hashedPublicKey,
           status: 0n,
           mecConformityStatus: 0n,
+          createdAt: '7324234',
+          statusUpdatedAt: '234234',
+          mecConformityStatusUpdatedAt: '234234',
         },
       ]
 
@@ -120,6 +124,9 @@ describe('RecordsService', () => {
           publicKey: 'anotherHashedPublicKey',
           status: 0n,
           mecConformityStatus: 0n,
+          createdAt: '7324234',
+          statusUpdatedAt: '234234',
+          mecConformityStatusUpdatedAt: '234234',
         },
       ]
 

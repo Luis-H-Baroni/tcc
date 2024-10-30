@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
-import { mock } from 'node:test'
 
 const mockContract = {
   storeRecord: {
@@ -30,6 +29,7 @@ describe('BlockchainService', () => {
           useValue: mockContract,
         },
         { provide: 'ETHERS_WALLET', useValue: mockWallet },
+        { provide: 'ETHERS_INTERFACE', useValue: {} },
       ],
     }).compile()
 

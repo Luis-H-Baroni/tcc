@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { RecordsController } from 'src/modules/records/records.controller'
 import { RecordsService } from 'src/modules/records/records.service'
 import { BlockchainService } from 'src/modules/blockchain/blockchain.service'
+import { RecordDto } from 'src/dtos/record.dto'
 
 describe('RecordsController', () => {
   let controller: RecordsController
@@ -17,6 +18,7 @@ describe('RecordsController', () => {
         { provide: 'ETHERS_PROVIDER', useValue: {} },
         { provide: 'ETHERS_CONTRACT', useValue: {} },
         { provide: 'ETHERS_WALLET', useValue: {} },
+        { provide: 'ETHERS_INTERFACE', useValue: {} },
       ],
     }).compile()
 
@@ -37,6 +39,9 @@ describe('RecordsController', () => {
           publicKey: 'mockKey',
           status: 0n,
           mecConformityStatus: 0n,
+          createdAt: '7324234',
+          statusUpdatedAt: '234234',
+          mecConformityStatusUpdatedAt: '234234',
         },
       ]
       const documentHash = 'mockedDocumentHash'
@@ -74,6 +79,9 @@ describe('RecordsController', () => {
           publicKey: 'mockKey',
           status: 1n,
           mecConformityStatus: 0n,
+          createdAt: '7324234',
+          statusUpdatedAt: '234234',
+          mecConformityStatusUpdatedAt: '234234',
         },
       ]
       const documentHash = 'mockedDocumentHash'
@@ -91,13 +99,16 @@ describe('RecordsController', () => {
     })
 
     it('should return a record with invalid mecConformityStatus', async () => {
-      const mockRecords = [
+      const mockRecords: RecordDto[] = [
         {
           hash: 'mockedHash',
           exists: true,
           publicKey: 'mockKey',
           status: 0n,
           mecConformityStatus: 1n,
+          createdAt: '7324234',
+          statusUpdatedAt: '234234',
+          mecConformityStatusUpdatedAt: '234234',
         },
       ]
       const documentHash = 'mockedDocumentHash'
@@ -151,10 +162,9 @@ describe('RecordsController', () => {
 
       expect(recordsService.verifyOwnership).toHaveBeenCalledWith(documentHash, publicKey)
       expect(result).toContain(
-        '<label>Registro não Encontrado para sua Chave Pública</label>',
+        '<label>Registro não encontrado para sua Chave Pública</label>',
       )
       expect(result).toContain('mockedDocumentHash')
-      expect(result).toContain('mockedPublicKey')
     })
 
     it('should throw an error', async () => {

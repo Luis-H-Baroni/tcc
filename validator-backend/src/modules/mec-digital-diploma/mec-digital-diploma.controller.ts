@@ -13,7 +13,7 @@ export class MecDigitalDiplomaController {
     console.log(file)
 
     try {
-      return this.mecDigitalDiplomaService.verifyDiploma(file)
+      return await this.mecDigitalDiplomaService.verifyDiploma(file)
     } catch (error) {
       console.log(error)
       throw error

@@ -13,7 +13,7 @@ export class AdminPanelController {
 
   @Get()
   getAdminPage(@Response() res) {
-    res.sendFile(join(__dirname, 'public', 'admin-panel.html')) // Caminho para o arquivo HTML
+    res.sendFile(join(__dirname, 'public', 'admin-panel.html'))
   }
 
   @Get('dashboard')
