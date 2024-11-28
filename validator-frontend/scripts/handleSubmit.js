@@ -157,7 +157,7 @@ export async function handleSubmit(event) {
                     populatedTransaction.gasLimit,
                   "ether"
                 )} readonly>
-                <label for="fee">MATIC</label>
+                <label for="fee">POL</label>
             </div>
           </div>
       </div>
